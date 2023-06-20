@@ -51,6 +51,9 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'app.apps.AppConfig',
     'myapp.apps.MyappConfig',
+    'deck.apps.DeckConfig',
+
+    'utils'
 ]
 
 MIDDLEWARE = [

@@ -22,6 +22,7 @@ urlpatterns = [
     path('', include('app.urls')),
     path('myapp/', include('myapp.urls')),
     path('users/', include('users.urls')),
+    path('deck/', include('deck.urls')),
     path('', include('allauth.urls')),
 ]
 

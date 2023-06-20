@@ -27,7 +27,7 @@
             <div class="col-12">
                 <a class="btn btn-secondary filtered" style="visibility:hidden" href="/?page=1">検索を解除</a>
                 <div class="float-right mt-1">
-                    <a class="btn btn-outline-dark" href="{% url 'create' %}">新規</a>
+                    <a class="btn btn-outline-dark" href="{% url 'deck_create' %}">新規</a>
                     <a class="btn btn-outline-dark" data-toggle="modal" data-target="#myModal" href="#">検索</a>
                 </div>
             </div>
@@ -40,58 +40,28 @@
         <div class="row">
             <div class="col-12">
                 <ul class="list-group">
-                    {% for item in item_list %}
+                    {% for deck in deck_list %}
                         <li class="list-group-item">
-                            {# item_detail_contents.html を参考に必要な項目を追加してください #}
+                            {# 必要な項目を追加してください #}
                             <div class="row">
                                 <div class="col-5 col-sm-3">
-                                    <p>1_文字列</p>
+                                    <p>デッキ名</p>
                                 </div>
                                 <div class="col-7 col-sm-9">
-                                    <p>{{ item.sample_1|default_if_none:"未入力" }}</p>
+                                    <p>{{ deck.deck_name|default_if_none:"未入力" }}</p>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-5 col-sm-3">
-                                    <p>2_メモ</p>
-                                </div>
-                                <div class="col-7 col-sm-9">
-                                    <p>{{ item.sample_2|default_if_none:"未入力" }}</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-5 col-sm-3">
-                                    <p>3_整数</p>
-                                </div>
-                                <div class="col-7 col-sm-9">
-                                    <p>{{ item.sample_3|default_if_none:"未入力" }}</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-5 col-sm-3">
-                                    <p>作成者</p>
-                                </div>
-                                <div class="col-7 col-sm-9">
-                                    <p>{{ item.created_by.get_full_name }}</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-5 col-sm-3">
-                                    <p>作成時間</p>
-                                </div>
-                                <div class="col-7 col-sm-9">
-                                    <p>{{ item.created_at|date:"Y/m/d G:i:s" }}</p>
-                                </div>
-                            </div>
+                            {% if False %}
                             <div class="row">
                                 <div class="col-12">
                                     <div class="float-right">
-                                        <a class="btn btn-outline-dark " href="{% url 'detail' item.pk %}">詳細</a>
-                                        <a class="btn btn-outline-dark " href="{% url 'update' item.pk %}">編集</a>
-                                        <a class="btn btn-outline-dark " href="{% url 'delete' item.pk %}">削除</a>
+                                        <a class="btn btn-outline-dark " href="{% url 'detail' deck.pk %}">詳細</a>
+                                        <a class="btn btn-outline-dark " href="{% url 'update' deck.pk %}">編集</a>
+                                        <a class="btn btn-outline-dark " href="{% url 'delete' deck.pk %}">削除</a>
                                     </div>
                                 </div>
                             </div>
+                            {% endif %}
                         </li>
                     {% empty %}
                         <li class="list-group-item">
@@ -104,14 +74,6 @@
         <div class="row mt-3">
             <div class="col-10 mx-auto">
                 {% include "_pagination.html" %}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <div class="float-right mt-1 mb-3">
-                    <a class="btn btn-outline-dark" href="{% url 'create' %}">新規</a>
-                    <a class="btn btn-outline-dark" data-toggle="modal" data-target="#myModal" href="#">検索</a>
-                </div>
             </div>
         </div>
     </div>
