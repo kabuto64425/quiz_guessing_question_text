@@ -216,3 +216,5 @@ AUTHENTICATION_BACKENDS = [
 
 ACCOUNT_ADAPTER = 'users.adapters.CustomAccountAdapter'
 SOCIALACCOUNT_ADAPTER = 'users.adapters.CustomSocialAccountAdapter'
+# Googleアカウント初回ログイン時に自動でサインアップする
+SOCIALACCOUNT_AUTO_SIGNUP = True
