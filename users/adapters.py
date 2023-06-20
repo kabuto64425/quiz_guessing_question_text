@@ -21,4 +21,7 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
     
     def save_user(self, request, sociallogin, form=None):
         print("save user social")
+        uuid = shortuuid.uuid()
+        user = sociallogin.user
+        user.uuid_for_google_form = uuid
         super().save_user(request, sociallogin, form)
