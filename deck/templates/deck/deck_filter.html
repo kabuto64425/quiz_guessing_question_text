@@ -51,12 +51,18 @@
                                     <p>{{ deck.deck_name|default_if_none:"未入力" }}</p>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="float-right">
+                                        <a class="btn btn-outline-dark " href="{% url 'deck_update' deck.pk %}">編集</a>
+                                    </div>
+                                </div>
+                            </div>
                             {% if False %}
                             <div class="row">
                                 <div class="col-12">
                                     <div class="float-right">
-                                        <a class="btn btn-outline-dark " href="{% url 'detail' deck.pk %}">詳細</a>
-                                        <a class="btn btn-outline-dark " href="{% url 'update' deck.pk %}">編集</a>
+                                        <a class="btn btn-outline-dark " href="{% url 'deck_update' deck.pk %}">編集</a>
                                         <a class="btn btn-outline-dark " href="{% url 'delete' deck.pk %}">削除</a>
                                     </div>
                                 </div>

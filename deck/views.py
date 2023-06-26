@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from django_filters.views import FilterView
 
 from utils.mixins import CustomLoginRequiredMixin
@@ -78,6 +78,24 @@ class DeckCreateView(CustomLoginRequiredMixin, CreateView):
         deck = form.save(commit=False)
         deck.owner = self.request.user
         deck.created_at = timezone.now()
+        deck.updated_at = timezone.now()
+        deck.save()
+
+        return HttpResponseRedirect(self.success_url)
+
+class DeckUpdateView(CustomLoginRequiredMixin, UpdateView):
+    """
+    ビュー：更新画面
+    """
+    model = Deck
+    form_class = DeckForm
+    success_url = reverse_lazy('deck_list')
+
+    def form_valid(self, form):
+        """
+        更新処理
+        """
+        deck = form.save(commit=False)
         deck.updated_at = timezone.now()
         deck.save()
 
