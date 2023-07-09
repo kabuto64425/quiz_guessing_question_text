@@ -1,17 +1,18 @@
 from django.http import HttpResponseRedirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.utils import timezone
 from django.views.generic.edit import CreateView, UpdateView
 from django_filters.views import FilterView
 
 from utils.mixins import CustomLoginRequiredMixin
 from users.models import User
+from deck.models import Deck
 
-from .filters import DeckFilterSet
-from .forms import DeckForm
-from .models import Deck
+from .filters import QuestionCardFilterSet
+from .forms import QuestionCardForm
+from .models import QuestionCard
 
-class DeckListView(CustomLoginRequiredMixin, FilterView):
+class QuestionCardListView(CustomLoginRequiredMixin, FilterView):
     """
     ビュー：一覧表示画面
 
@@ -19,10 +20,10 @@ class DeckListView(CustomLoginRequiredMixin, FilterView):
     ・django-filter 一覧画面(ListView)に検索機能を追加
     https://django-filter.readthedocs.io/en/master/
     """
-    model = Deck
+    model = QuestionCard
 
     # django-filter 設定
-    filterset_class = DeckFilterSet
+    filterset_class = QuestionCardFilterSet
     # django-filter ver2.0対応 クエリ未設定時に全件表示する設定
     strict = False
 
@@ -52,8 +53,8 @@ class DeckListView(CustomLoginRequiredMixin, FilterView):
         ソート順・デフォルトの絞り込みを指定
         """
         # デフォルトの並び順として、登録時間（降順）をセットする。
-        user = self.request.user  # ログインユーザーモデルの取得
-        return Deck.objects.all().filter(owner = user).order_by('-created_at')
+        deck = Deck.objects.get(pk=self.kwargs.get('deck_pk'))
+        return QuestionCard.objects.all().filter(in_deck = deck)
 
     def get_context_data(self, *, object_list=None, **kwargs):
         """
@@ -63,40 +64,33 @@ class DeckListView(CustomLoginRequiredMixin, FilterView):
         # 例：kwargs['sample'] = 'sample'
         return super().get_context_data(object_list=object_list, **kwargs)
 
-class DeckCreateView(CustomLoginRequiredMixin, CreateView):
+class QuestionCardCreateView(CustomLoginRequiredMixin, CreateView):
     """
     ビュー：登録画面
     """
-    model = Deck
-    form_class = DeckForm
-    success_url = reverse_lazy('deck_list')
+    model = QuestionCard
+    form_class = QuestionCardForm
+    #success_url = "aaaa"
+
+    def get_success_url(self):
+        deck_pk = self.kwargs.get('deck_pk')
+        return reverse('question_card_list', kwargs={'deck_pk': deck_pk})
+
+    #def get_success_url(self):
+        #reverse_lazy('question_card_list', kwargs={'deck_pk' : self.kwargs.get('deck_pk')})
+        #success_url = reverse('deck_list')
+        #return "aaa"
 
     def form_valid(self, form):
         """
         登録処理
         """
-        deck = form.save(commit=False)
-        deck.owner = self.request.user
-        deck.created_at = timezone.now()
-        deck.updated_at = timezone.now()
-        deck.save()
-
-        return HttpResponseRedirect(self.success_url)
-
-class DeckUpdateView(CustomLoginRequiredMixin, UpdateView):
-    """
-    ビュー：更新画面
-    """
-    model = Deck
-    form_class = DeckForm
-    success_url = reverse_lazy('deck_list')
-
-    def form_valid(self, form):
-        """
-        更新処理
-        """
-        deck = form.save(commit=False)
-        deck.updated_at = timezone.now()
-        deck.save()
-
-        return HttpResponseRedirect(self.success_url)
+        question_card = form.save(commit=False)
+        deck = Deck.objects.get(pk=self.kwargs.get('deck_pk'))
+        question_card.in_deck = deck
+        #question_card.owner = self.request.user
+        question_card.created_at = timezone.now()
+        question_card.updated_at = timezone.now()
+        question_card.save()
+        return super().form_valid(form)
+        #return HttpResponseRedirect(self.success_url)

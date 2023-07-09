@@ -27,7 +27,7 @@
             <div class="col-12">
                 <a class="btn btn-secondary filtered" style="visibility:hidden" href="/?page=1">検索を解除</a>
                 <div class="float-right mt-1">
-                    <a class="btn btn-outline-dark" href="{% url 'deck_create' %}">新規</a>
+                    <a class="btn btn-outline-dark" href="{% url 'question_card_create' request.resolver_match.kwargs.deck_pk %}">新規</a>
                     <a class="btn btn-outline-dark" data-toggle="modal" data-target="#myModal" href="#">検索</a>
                 </div>
             </div>
@@ -40,23 +40,23 @@
         <div class="row">
             <div class="col-12">
                 <ul class="list-group">
-                    {% for deck in deck_list %}
+                    {% for questioncard in questioncard_list %}
                         <li class="list-group-item">
                             {# 必要な項目を追加してください #}
                             <div class="row">
                                 <div class="col-5 col-sm-3">
-                                    <p>デッキ名</p>
+                                    <p>問題文</p>
                                 </div>
                                 <div class="col-7 col-sm-9">
-                                    <p>{{ deck.deck_name|default_if_none:"未入力" }}</p>
+                                    <p>{{ questioncard.question_text|default_if_none:"未入力" }}</p>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-12">
-                                    <div class="float-right">
-                                        <a class="btn btn-outline-dark " href="{% url 'question_card_list' deck.pk %}">問題</a>
-                                        <a class="btn btn-outline-dark " href="{% url 'deck_update' deck.pk %}">編集</a>
-                                    </div>
+                                <div class="col-5 col-sm-3">
+                                    <p>正解</p>
+                                </div>
+                                <div class="col-7 col-sm-9">
+                                    <p>{{ questioncard.correct_answer|default_if_none:"未入力" }}</p>
                                 </div>
                             </div>
                             {% if False %}
