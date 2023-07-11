@@ -59,6 +59,13 @@
                                     <p>{{ questioncard.correct_answer|default_if_none:"未入力" }}</p>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="float-right">
+                                        <a class="btn btn-outline-dark " href="{% url 'question_card_update' questioncard.pk %}">編集</a>
+                                    </div>
+                                </div>
+                            </div>
                             {% if False %}
                             <div class="row">
                                 <div class="col-12">

@@ -70,16 +70,19 @@ class QuestionCardCreateView(CustomLoginRequiredMixin, CreateView):
     """
     model = QuestionCard
     form_class = QuestionCardForm
-    #success_url = "aaaa"
 
     def get_success_url(self):
         deck_pk = self.kwargs.get('deck_pk')
         return reverse('question_card_list', kwargs={'deck_pk': deck_pk})
-
-    #def get_success_url(self):
-        #reverse_lazy('question_card_list', kwargs={'deck_pk' : self.kwargs.get('deck_pk')})
-        #success_url = reverse('deck_list')
-        #return "aaa"
+    
+    def get_context_data(self, *, object_list=None, **kwargs):
+        """
+        表示データの設定
+        """
+        # 表示データを追加したい場合は、ここでキーを追加しテンプレート上で表示する
+        # 例：kwargs['sample'] = 'sample'
+        kwargs['deck_pk'] = self.kwargs.get('deck_pk')
+        return super().get_context_data(object_list=object_list, **kwargs)
 
     def form_valid(self, form):
         """
@@ -88,9 +91,37 @@ class QuestionCardCreateView(CustomLoginRequiredMixin, CreateView):
         question_card = form.save(commit=False)
         deck = Deck.objects.get(pk=self.kwargs.get('deck_pk'))
         question_card.in_deck = deck
-        #question_card.owner = self.request.user
         question_card.created_at = timezone.now()
         question_card.updated_at = timezone.now()
         question_card.save()
         return super().form_valid(form)
-        #return HttpResponseRedirect(self.success_url)
+
+class QuestionCardUpdateView(CustomLoginRequiredMixin, UpdateView):
+    """
+    ビュー：更新画面
+    """
+    model = QuestionCard
+    form_class = QuestionCardForm
+
+    def get_success_url(self):
+        deck = self.object.in_deck
+        return reverse('question_card_list', kwargs={'deck_pk': deck.pk})
+    
+    def get_context_data(self, *, object_list=None, **kwargs):
+        """
+        表示データの設定
+        """
+        # 表示データを追加したい場合は、ここでキーを追加しテンプレート上で表示する
+        # 例：kwargs['sample'] = 'sample'
+        deck = self.object.in_deck
+        kwargs['deck_pk'] = deck.pk
+        return super().get_context_data(object_list=object_list, **kwargs)
+
+    def form_valid(self, form):
+        """
+        更新処理
+        """
+        question_card = form.save(commit=False)
+        question_card.updated_at = timezone.now()
+        question_card.save()
+        return super().form_valid(form)
