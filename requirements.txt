@@ -1,11 +1,14 @@
 asgiref==3.7.2
+certifi==2023.5.7
 cffi==1.15.1
+charset-normalizer==3.1.0
 cryptography==41.0.1
 defusedxml==0.7.1
-Django==3.2.19
+Django==3.2.20
 django-allauth==0.54.0
 django-crispy-forms==1.14.0
 django-filter==2.4.0
+idna==3.4
 oauthlib==3.2.2
 pycparser==2.21
 PyJWT==2.7.0
