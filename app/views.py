@@ -2,15 +2,18 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views.generic import DetailView
+from django.views.generic import DetailView, TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django_filters.views import FilterView
+from django.views.generic import TemplateView
 
 from utils.mixins import CustomLoginRequiredMixin
 from .filters import ItemFilterSet
 from .forms import ItemForm
 from .models import Item
 
+class IndexView(TemplateView):
+    template_name = "app/index.html"
 
 # 未ログインのユーザーにアクセスを許可する場合は、LoginRequiredMixinを継承から外してください。
 #
