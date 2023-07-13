@@ -3,6 +3,7 @@ from django.urls import reverse_lazy, reverse
 from django.utils import timezone
 from django.views.generic.edit import CreateView, UpdateView
 from django_filters.views import FilterView
+from django.core.exceptions import PermissionDenied
 
 from utils.mixins import CustomLoginRequiredMixin
 from users.models import User
@@ -31,6 +32,11 @@ class QuestionCardListView(CustomLoginRequiredMixin, FilterView):
     paginate_by = 10
 
     def get(self, request, **kwargs):
+        # 自身のデッキに対してほかユーザーがアクセスするのを防ぐため
+        deck = Deck.objects.get(pk=self.kwargs.get('deck_pk'))
+        if self.request.user != deck.owner:
+            raise PermissionDenied
+            
         """
         リクエスト受付
         セッション変数の管理:一覧画面と詳細画面間の移動時に検索条件が維持されるようにする。
@@ -71,6 +77,14 @@ class QuestionCardCreateView(CustomLoginRequiredMixin, CreateView):
     model = QuestionCard
     form_class = QuestionCardForm
 
+    # 自身のデッキに対してほかユーザーがアクセスするのを防ぐため
+    def get(self, request, *args, **kwargs):
+        deck = Deck.objects.get(pk=self.kwargs.get('deck_pk'))
+        if self.request.user == deck.owner:
+            return super().get(request, *args, **kwargs)
+        else:
+            raise PermissionDenied
+
     def get_success_url(self):
         deck_pk = self.kwargs.get('deck_pk')
         return reverse('question_card_list', kwargs={'deck_pk': deck_pk})
@@ -102,6 +116,14 @@ class QuestionCardUpdateView(CustomLoginRequiredMixin, UpdateView):
     """
     model = QuestionCard
     form_class = QuestionCardForm
+
+    # 自身のデッキに対してほかユーザーがアクセスするのを防ぐため
+    def get(self, request, *args, **kwargs):
+        deck = super().get_object().in_deck
+        if self.request.user == deck.owner:
+            return super().get(request, *args, **kwargs)
+        else:
+            raise PermissionDenied
 
     def get_success_url(self):
         deck = self.object.in_deck

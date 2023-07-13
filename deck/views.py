@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views.generic.edit import CreateView, UpdateView
 from django_filters.views import FilterView
+from django.core.exceptions import PermissionDenied
 
 from utils.mixins import CustomLoginRequiredMixin
 from users.models import User
@@ -90,6 +91,14 @@ class DeckUpdateView(CustomLoginRequiredMixin, UpdateView):
     model = Deck
     form_class = DeckForm
     success_url = reverse_lazy('deck_list')
+
+    # 自身のデッキに対してほかユーザーがアクセスするのを防ぐため
+    def get(self, request, *args, **kwargs):
+        post = super().get_object()
+        if self.request.user == post.owner:
+            return super().get(request, *args, **kwargs)
+        else:
+            raise PermissionDenied
 
     def form_valid(self, form):
         """
