@@ -7,3 +7,6 @@ from .mixins import CustomLoginRequiredMixin #追加
 # このviewのルーティングは「/myapp/Index」
 class IndexView(CustomLoginRequiredMixin, TemplateView):
     template_name = "myapp/index.html"
+
+class VueTestView(CustomLoginRequiredMixin, TemplateView):
+    template_name = "myapp/vuetest.html"

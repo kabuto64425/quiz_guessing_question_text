@@ -1,0 +1,46 @@
+{% extends "_base.html" %}
+{% block content %}
+    {% load crispy_forms_tags %}
+    <h1>This is test page</h1>
+    <hr>
+    <div id="counter">
+        Counter: [[ counter ]]  # delimiterで"[[ ]]"を使えるようにしています
+        <button @click="addValue(5)">増やす!!</button>
+        <button @click="submitdjnago(1)">django!!</button>
+    </div>
+    <script>
+        const Counter = {
+            data() {
+                return {
+                    counter: 0
+                }
+            },
+            methods: {
+                addValue(d) {
+                    this.counter += d;
+                },
+                submitdjnago(d) {
+                    self = this
+                    axios.get('vuetest')
+                    .then(function (res) {
+                        self.counter++;
+                    });
+                    //this.counter += d;
+                },
+            },
+            /*
+                配列
+            */
+            /*mounted() {
+                setInterval(() => {
+                    this.counter++
+                }, 1000)
+            },*/
+            delimiters: ['[[', ']]']
+        }
+     
+        Vue.createApp(
+          Counter
+        ).mount('#counter')
+    </script>
+{% endblock %}

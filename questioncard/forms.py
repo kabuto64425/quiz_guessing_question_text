@@ -11,7 +11,7 @@ class QuestionCardForm(forms.ModelForm):
 
     class Meta:
         model = QuestionCard
-        fields = '__all__'
+        exclude = ('order',)
 
         # 以下のフィールド以外が入力フォームに表示される
         # AutoField

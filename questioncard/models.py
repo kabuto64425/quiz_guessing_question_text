@@ -32,6 +32,7 @@ class QuestionCard(models.Model):
         verbose_name='出題順',
         blank=False,
         null=False,
+        #editable=False,
     )
 
     in_deck = models.ForeignKey(

@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.views.generic.edit import CreateView, UpdateView
 from django_filters.views import FilterView
 from django.core.exceptions import PermissionDenied
+from django.db.models import Max
 
 from utils.mixins import CustomLoginRequiredMixin
 from users.models import User
@@ -60,7 +61,7 @@ class QuestionCardListView(CustomLoginRequiredMixin, FilterView):
         """
         # デフォルトの並び順として、登録時間（降順）をセットする。
         deck = Deck.objects.get(pk=self.kwargs.get('deck_pk'))
-        return QuestionCard.objects.all().filter(in_deck = deck)
+        return QuestionCard.objects.all().filter(in_deck = deck).order_by('order')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         """
@@ -105,6 +106,10 @@ class QuestionCardCreateView(CustomLoginRequiredMixin, CreateView):
         question_card = form.save(commit=False)
         deck = Deck.objects.get(pk=self.kwargs.get('deck_pk'))
         question_card.in_deck = deck
+
+        order_max = QuestionCard.objects.all().filter(in_deck = deck).aggregate(Max('order')).get('order__max')
+        question_card.order = 0 if order_max is None else order_max + 1
+
         question_card.created_at = timezone.now()
         question_card.updated_at = timezone.now()
         question_card.save()
