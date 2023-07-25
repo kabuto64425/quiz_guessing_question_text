@@ -1,7 +1,7 @@
 {% extends "_base.html" %}
 {% block content %}
     {% load crispy_forms_tags %}
-    <div class="container">
+    <div id="counter" class="container">
         <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -117,5 +117,100 @@
                 {% include "_pagination.html" %}
             </div>
         </div>
+        <div class="row">
+            <template>
+                <div>
+                    <div v-for="(item, index) in items" :key="item.id" @click="swap(index)">
+                        {{ item.name }}
+                    </div>
+                </div>
+              </template>
+        </div>
+        {% for questioncard in questioncard_list %}
+            <my-template name="{{ questioncard.question_text|default_if_none:'未入力' }}"></my-template>
+        {% endfor %}
     </div>
+    <div id="app" class="container">
+        [[test]]
+        <my-template name="aaa" ref="first_child"></my-template>
+        <my-template name="bbb"></my-template>
+        <button @click="swap()">change!!</button>
+    </div>
+    <script>
+        const Counter = {
+            data() {
+                return {
+                    counter: 0,
+                    items : [{ message: 'Foo' }, { message: 'Bar' }]
+                }
+            },
+            methods: {
+                addValue(d) {
+                    this.counter += d;
+                },
+                submitdjnago(d) {
+                    self = this
+                    axios.get('vuetest')
+                    .then(function (res) {
+                        self.counter++;
+                    });
+                    //this.counter += d;
+                },
+                change() {
+                    [this.items[0], this.items[1]] = [this.items[1], this.items[0]];
+                }
+            },
+            /*
+                配列
+            */
+            /*mounted() {
+                setInterval(() => {
+                    this.counter++
+                }, 1000)
+            },*/
+            delimiters: ['[[', ']]']
+        }
+     
+        const app = Vue.createApp(
+            Counter
+        )
+        app.component("my-template", {
+            props:["name"],
+            template: `
+                <div class="row">
+                    <div class="col">
+                        <p>[[name]]</p>
+                    </div>
+                </div>
+            `,
+            delimiters: ['[[', ']]']
+        });
+        app.mount("#counter")
+
+        const ComponentA = {
+            props:["name"],
+            template: `
+                <div class="row question_card">
+                    <div class="col">
+                        <p>[[name]]</p>
+                    </div>
+                </div>`,
+            delimiters: ['[[', ']]']
+        }
+
+        const app2 = Vue.createApp({
+            data() {
+                return {
+                    myName : ['Foo', 'Bar']
+                }
+            },
+            methods: {
+                swap() {
+                    console.log(this.$refs.first_child.$el.textContent);
+                    [this.myName[0], this.myName[1]] = [this.myName[1], this.myName[0]];
+                }
+            },
+            delimiters: ['[[', ']]']
+        }).component("my-template", ComponentA).mount("#app")
+    </script>
 {% endblock %}

@@ -61,6 +61,7 @@ class QuestionCardListView(CustomLoginRequiredMixin, FilterView):
         """
         # デフォルトの並び順として、登録時間（降順）をセットする。
         deck = Deck.objects.get(pk=self.kwargs.get('deck_pk'))
+        print(type(QuestionCard.objects.all().filter(in_deck = deck).order_by('order')))
         return QuestionCard.objects.all().filter(in_deck = deck).order_by('order')
 
     def get_context_data(self, *, object_list=None, **kwargs):
