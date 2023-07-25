@@ -7,12 +7,17 @@
         Counter: [[ counter ]]  # delimiterで"[[ ]]"を使えるようにしています
         <button @click="addValue(5)">増やす!!</button>
         <button @click="submitdjnago(1)">django!!</button>
+        <button @click="change()">change!!</button>
+        <li v-for="item in items">
+            [[ item.message ]]
+        </li>
     </div>
     <script>
         const Counter = {
             data() {
                 return {
-                    counter: 0
+                    counter: 0,
+                    items : [{ message: 'Foo' }, { message: 'Bar' }]
                 }
             },
             methods: {
@@ -27,6 +32,9 @@
                     });
                     //this.counter += d;
                 },
+                change() {
+                    [this.items[0], this.items[1]] = [this.items[1], this.items[0]];
+                }
             },
             /*
                 配列
