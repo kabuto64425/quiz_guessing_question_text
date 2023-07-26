@@ -126,14 +126,20 @@
                 </div>
               </template>
         </div>
-        {% for questioncard in questioncard_list %}
-            <my-template name="{{ questioncard.question_text|default_if_none:'未入力' }}"></my-template>
-        {% endfor %}
+        <ul class="list-group">
+            {% for questioncard in questioncard_list %}
+                <my-template name="{{ questioncard.question_text|default_if_none:'未入力' }}"></my-template>
+            {% endfor %}
+        </ul>
     </div>
     <div id="app" class="container">
-        [[test]]
-        <my-template name="aaa" ref="first_child"></my-template>
-        <my-template name="bbb"></my-template>
+        <div ref="aaa">
+            {% for questioncard in questioncard_list %}
+                <my-template question_text="{{ questioncard.question_text|default_if_none:'未入力' }}"
+                            correct_answer="{{ questioncard.correct_answer|default_if_none:'未入力' }}"
+                            question_card_update_url="{% url 'question_card_update' questioncard.pk %}"></my-template>
+            {% endfor %}
+        </div>
         <button @click="swap()">change!!</button>
     </div>
     <script>
@@ -188,26 +194,88 @@
         app.mount("#counter")
 
         const ComponentA = {
-            props:["name"],
+            props:["question_text", "correct_answer", "question_card_update_url"],
             template: `
-                <div class="row question_card">
-                    <div class="col">
-                        <p>[[name]]</p>
+                <li class="list-group-item question_card">
+                    {# 必要な項目を追加してください #}
+                    <div class="row ">
+                        <div class="col-11">
+                            <div class="row">
+                                <div class="col-5 col-sm-3">
+                                    <p>問題文</p>
+                                </div>
+                                <div class="col-7 col-sm-9">
+                                    <p>[[question_text]]</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5 col-sm-3">
+                                    <p>正解</p>
+                                </div>
+                                <div class="col-7 col-sm-9">
+                                    <p>[[correct_answer]]</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="float-right">
+                                        {# <a class="btn btn-outline-dark " href="{% url 'question_card_update' questioncard.pk %}">編集</a> #}
+                                        <a class="btn btn-outline-dark " v-bind:href="question_card_update_url">編集</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-1">
+                            <div class="row">
+                                <div class="float-right">
+                                    <a class="btn btn-outline-dark " href="#">↟</a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="float-right">
+                                    <a class="btn btn-outline-dark " href="#">↑</a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="float-right">
+                                    <a class="btn btn-outline-dark " href="#">↓</a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="float-right">
+                                    <a class="btn btn-outline-dark " href="#">↡</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>`,
+                    
+                    {% if False %}
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="float-right">
+                                <a class="btn btn-outline-dark " href="{% url 'deck_update' deck.pk %}">編集</a>
+                                <a class="btn btn-outline-dark " href="{% url 'delete' deck.pk %}">削除</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </li>`
+                ,
             delimiters: ['[[', ']]']
         }
 
         const app2 = Vue.createApp({
             data() {
                 return {
-                    myName : ['Foo', 'Bar']
+                    counter: 0,
+                    items : [{ message: 'Foo' }, { message: 'Bar' }]
                 }
             },
             methods: {
                 swap() {
-                    console.log(this.$refs.first_child.$el.textContent);
-                    [this.myName[0], this.myName[1]] = [this.myName[1], this.myName[0]];
+                    const aaa = this.$refs.aaa;
+                    quetioncards = aaa.getElementsByClassName("question_card");
+                    aaa.insertBefore(quetioncards[0], null)
                 }
             },
             delimiters: ['[[', ']]']
