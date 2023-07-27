@@ -40,7 +40,7 @@
         <div class="row">
             <div class="col-12">
                 <ul class="list-group">
-                    {% for questioncard in questioncard_list %}
+                    {% for questionCard in questionCard_list %}
                         <li class="list-group-item">
                             {# 必要な項目を追加してください #}
                             <div class="row">
@@ -50,7 +50,7 @@
                                             <p>問題文</p>
                                         </div>
                                         <div class="col-7 col-sm-9">
-                                            <p>{{ questioncard.question_text|default_if_none:"未入力" }}</p>
+                                            <p>{{ questionCard.question_text|default_if_none:"未入力" }}</p>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -58,13 +58,13 @@
                                             <p>正解</p>
                                         </div>
                                         <div class="col-7 col-sm-9">
-                                            <p>{{ questioncard.correct_answer|default_if_none:"未入力" }}</p>
+                                            <p>{{ questionCard.correct_answer|default_if_none:"未入力" }}</p>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="float-right">
-                                                <a class="btn btn-outline-dark " href="{% url 'question_card_update' questioncard.pk %}">編集</a>
+                                                <a class="btn btn-outline-dark " href="{% url 'question_card_update' questionCard.pk %}">編集</a>
                                             </div>
                                         </div>
                                     </div>
@@ -127,74 +127,36 @@
               </template>
         </div>
         <ul class="list-group">
-            {% for questioncard in questioncard_list %}
-                <my-template name="{{ questioncard.question_text|default_if_none:'未入力' }}"></my-template>
+            {% for questionCard in questionCard_list %}
+                <my-template name="{{ questionCard.question_text|default_if_none:'未入力' }}"></my-template>
             {% endfor %}
         </ul>
     </div>
+    <!--<div id="app" class="container">
+        <div ref="aaa">
+            {% for questionCard in questionCard_list %}
+                <my-template question_text="{{ questionCard.question_text|default_if_none:'未入力' }}"
+                            correct_answer="{{ questionCard.correct_answer|default_if_none:'未入力' }}"
+                            question_card_update_url="{% url 'question_card_update' questionCard.pk %}"></my-template>
+            {% endfor %}
+        </div>
+        <button @click="swap()">change!!</button>
+    </div>-->
     <div id="app" class="container">
         <div ref="aaa">
-            {% for questioncard in questioncard_list %}
-                <my-template question_text="{{ questioncard.question_text|default_if_none:'未入力' }}"
-                            correct_answer="{{ questioncard.correct_answer|default_if_none:'未入力' }}"
-                            question_card_update_url="{% url 'question_card_update' questioncard.pk %}"></my-template>
-            {% endfor %}
+            <my-template v-for="(questionCard, index) in questionardList"
+                :question-text="questionCard.questionText"
+                :correct-answer="questionCard.correctAnswer"
+                :question-card-update-url="questionCard.questionCardUpdateUrl"
+                :number="index"
+                @up="up"
+                @down="down"></my-template>
         </div>
         <button @click="swap()">change!!</button>
     </div>
     <script>
-        const Counter = {
-            data() {
-                return {
-                    counter: 0,
-                    items : [{ message: 'Foo' }, { message: 'Bar' }]
-                }
-            },
-            methods: {
-                addValue(d) {
-                    this.counter += d;
-                },
-                submitdjnago(d) {
-                    self = this
-                    axios.get('vuetest')
-                    .then(function (res) {
-                        self.counter++;
-                    });
-                    //this.counter += d;
-                },
-                change() {
-                    [this.items[0], this.items[1]] = [this.items[1], this.items[0]];
-                }
-            },
-            /*
-                配列
-            */
-            /*mounted() {
-                setInterval(() => {
-                    this.counter++
-                }, 1000)
-            },*/
-            delimiters: ['[[', ']]']
-        }
-     
-        const app = Vue.createApp(
-            Counter
-        )
-        app.component("my-template", {
-            props:["name"],
-            template: `
-                <div class="row">
-                    <div class="col">
-                        <p>[[name]]</p>
-                    </div>
-                </div>
-            `,
-            delimiters: ['[[', ']]']
-        });
-        app.mount("#counter")
-
         const ComponentA = {
-            props:["question_text", "correct_answer", "question_card_update_url"],
+            props:["questionText", "correctAnswer", "questionCardUpdateUrl", "number"],
             template: `
                 <li class="list-group-item question_card">
                     {# 必要な項目を追加してください #}
@@ -205,7 +167,7 @@
                                     <p>問題文</p>
                                 </div>
                                 <div class="col-7 col-sm-9">
-                                    <p>[[question_text]]</p>
+                                    <p>[[questionText]]</p>
                                 </div>
                             </div>
                             <div class="row">
@@ -213,14 +175,13 @@
                                     <p>正解</p>
                                 </div>
                                 <div class="col-7 col-sm-9">
-                                    <p>[[correct_answer]]</p>
+                                    <p>[[correctAnswer]]</p>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="float-right">
-                                        {# <a class="btn btn-outline-dark " href="{% url 'question_card_update' questioncard.pk %}">編集</a> #}
-                                        <a class="btn btn-outline-dark " v-bind:href="question_card_update_url">編集</a>
+                                        <a class="btn btn-outline-dark " v-bind:href="questionCardUpdateUrl">編集</a>
                                     </div>
                                 </div>
                             </div>
@@ -228,22 +189,22 @@
                         <div class="col-1">
                             <div class="row">
                                 <div class="float-right">
-                                    <a class="btn btn-outline-dark " href="#">↟</a>
+                                    <a class="btn btn-outline-dark " href="#" @click.prevent.stop>↟</a>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="float-right">
-                                    <a class="btn btn-outline-dark " href="#">↑</a>
+                                    <a class="btn btn-outline-dark " href="#" @click.prevent.stop="up">↑</a>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="float-right">
-                                    <a class="btn btn-outline-dark " href="#">↓</a>
+                                    <a class="btn btn-outline-dark " href="#" @click.prevent.stop="down">↓</a>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="float-right">
-                                    <a class="btn btn-outline-dark " href="#">↡</a>
+                                    <a class="btn btn-outline-dark " href="#" @click.prevent.stop>↡</a>
                                 </div>
                             </div>
                         </div>
@@ -261,21 +222,62 @@
                     {% endif %}
                 </li>`
                 ,
+            methods:{
+                up: function(){
+                    console.log('up');
+                    this.$emit("up", this.number);
+                },
+                down: function(){
+                    console.log('down');
+                    this.$emit("down", this.number);
+                }
+            },
             delimiters: ['[[', ']]']
         }
+
+        const questionardListFromServer = [
+            {% for questioncard in questioncard_list %}
+                {
+                    questionText: "{{ questioncard.question_text|default_if_none:'未入力' }}",
+                    correctAnswer: "{{ questioncard.correct_answer|default_if_none:'未入力' }}",
+                    questionCardUpdateUrl: "{% url 'question_card_update' questioncard.pk %}",
+                    number: {{ forloop.counter0 }},
+                },
+            {% endfor %}
+        ];
 
         const app2 = Vue.createApp({
             data() {
                 return {
                     counter: 0,
-                    items : [{ message: 'Foo' }, { message: 'Bar' }]
+                    items : [{ message: 'Foo' }, { message: 'Bar' }],
+                    questionardList : questionardListFromServer,
                 }
             },
             methods: {
                 swap() {
-                    const aaa = this.$refs.aaa;
+                    [this.questionardList[0], this.questionardList[1]] = [this.questionardList[1], this.questionardList[0]];
+                    /*const aaa = this.$refs.aaa;
                     quetioncards = aaa.getElementsByClassName("question_card");
-                    aaa.insertBefore(quetioncards[0], null)
+                    aaa.insertBefore(quetioncards[0], null)*/
+                },
+                up: function(number) {
+                    console.log(number);
+                    console.log("up parent");
+                    if(number <= 0) {
+                        return;
+                    }
+
+                    [this.questionardList[number], this.questionardList[number - 1]] = [this.questionardList[number - 1], this.questionardList[number]];
+                },
+                down: function(number) {
+                    console.log(number);
+                    console.log("down parent");
+                    if(number >= this.questionardList.length - 1) {
+                        return;
+                    }
+
+                    [this.questionardList[number], this.questionardList[number + 1]] = [this.questionardList[number + 1], this.questionardList[number]];
                 }
             },
             delimiters: ['[[', ']]']
