@@ -1,7 +1,7 @@
 {% extends "_base.html" %}
 {% block content %}
     {% load crispy_forms_tags %}
-    <div id="counter" class="container">
+    <div id="app" class="container">
         <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -40,75 +40,16 @@
         <div class="row">
             <div class="col-12">
                 <ul class="list-group">
-                    {% for questioncard in questioncard_list %}
-                        <li class="list-group-item">
-                            {# 必要な項目を追加してください #}
-                            <div class="row">
-                                <div class="col-11">
-                                    <div class="row">
-                                        <div class="col-5 col-sm-3">
-                                            <p>問題文</p>
-                                        </div>
-                                        <div class="col-7 col-sm-9">
-                                            <p>{{ questioncard.question_text|default_if_none:"未入力" }}</p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-5 col-sm-3">
-                                            <p>正解</p>
-                                        </div>
-                                        <div class="col-7 col-sm-9">
-                                            <p>{{ questioncard.correct_answer|default_if_none:"未入力" }}</p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="float-right">
-                                                <a class="btn btn-outline-dark " href="{% url 'question_card_update' questioncard.pk %}">編集</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-1">
-                                    <div class="row">
-                                        <div class="float-right">
-                                            <a class="btn btn-outline-dark " href="#">↟</a>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="float-right">
-                                            <a class="btn btn-outline-dark " href="#">↑</a>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="float-right">
-                                            <a class="btn btn-outline-dark " href="#">↓</a>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="float-right">
-                                            <a class="btn btn-outline-dark " href="#">↡</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            {% if False %}
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="float-right">
-                                        <a class="btn btn-outline-dark " href="{% url 'deck_update' deck.pk %}">編集</a>
-                                        <a class="btn btn-outline-dark " href="{% url 'delete' deck.pk %}">削除</a>
-                                    </div>
-                                </div>
-                            </div>
-                            {% endif %}
-                        </li>
-                    {% empty %}
-                        <li class="list-group-item">
-                            対象のデータがありません
-                        </li>
-                    {% endfor %}
+                    <question-card-component v-for="(questionCard, index) in questionCardList"
+                    :question-card-pk="questionCard.questionCardPk"
+                    :question-text="questionCard.questionText"
+                    :correct-answer="questionCard.correctAnswer"
+                    :question-card-update-url="questionCard.questionCardUpdateUrl"
+                    :number="index"
+                    :is-first="index == 0"
+                    :is-last="index == questionCardList.length - 1"
+                    @up="up"
+                    @down="down"></my-template>
                 </ul>
             </div>
         </div>
@@ -117,100 +58,109 @@
                 {% include "_pagination.html" %}
             </div>
         </div>
-        <div class="row">
-            <template>
-                <div>
-                    <div v-for="(item, index) in items" :key="item.id" @click="swap(index)">
-                        {{ item.name }}
-                    </div>
-                </div>
-              </template>
-        </div>
-        {% for questioncard in questioncard_list %}
-            <my-template name="{{ questioncard.question_text|default_if_none:'未入力' }}"></my-template>
-        {% endfor %}
-    </div>
-    <div id="app" class="container">
-        [[test]]
-        <my-template name="aaa" ref="first_child"></my-template>
-        <my-template name="bbb"></my-template>
-        <button @click="swap()">change!!</button>
     </div>
     <script>
-        const Counter = {
+        const questionCardListFromServer = [
+            {% for questioncard in questioncard_list %}
+                {
+                    questionCardPk: "{{questioncard.pk}}",
+                    questionText: "{{ questioncard.question_text|default_if_none:'未入力' }}",
+                    correctAnswer: "{{ questioncard.correct_answer|default_if_none:'未入力' }}",
+                    questionCardUpdateUrl: "{% url 'question_card_update' questioncard.pk %}",
+                },
+            {% endfor %}
+        ];
+
+        const QuestionCardComponent = {
+            props:["questionCardPk", "questionText", "correctAnswer", "questionCardUpdateUrl", "number", "isFirst", "isLast"],
+            template: `
+                <li class="list-group-item question_card">
+                    {# 必要な項目を追加してください #}
+                    <div class="row ">
+                        <div class="col-11">
+                            <div class="row">
+                                <div class="col-5 col-sm-3">
+                                    <p>問題文</p>
+                                </div>
+                                <div class="col-7 col-sm-9">
+                                    <p>[[questionText]]</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5 col-sm-3">
+                                    <p>正解</p>
+                                </div>
+                                <div class="col-7 col-sm-9">
+                                    <p>[[correctAnswer]]</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="float-right">
+                                        <a class="btn btn-outline-dark " v-bind:href="questionCardUpdateUrl">編集</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-1">
+                            <div class="row">
+                                <div class="float-right">
+                                    <a class="btn btn-outline-dark" :class="{'disabled' : isFirst}" href="#" @click.prevent.stop="up">↑</a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="float-right">
+                                    <a class="btn btn-outline-dark" :class="{'disabled' : isLast}" href="#" @click.prevent.stop="down">↓</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {% if False %}
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="float-right">
+                                <a class="btn btn-outline-dark " href="{% url 'deck_update' deck.pk %}">編集</a>
+                                <a class="btn btn-outline-dark " href="{% url 'delete' deck.pk %}">削除</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </li>`
+                ,
+            methods:{
+                isFirst() {
+                    return this.number == 0;
+                },
+                up: function(){
+                    this.$emit("up", this.number, this.questionCardPk);
+                },
+                down: function(){
+                    this.$emit("down", this.number, this.questionCardPk);
+                }
+            },
+            delimiters: ['[[', ']]']
+        }
+
+        const app = Vue.createApp({
             data() {
                 return {
                     counter: 0,
-                    items : [{ message: 'Foo' }, { message: 'Bar' }]
+                    items : [{ message: 'Foo' }, { message: 'Bar' }],
+                    questionCardList : questionCardListFromServer,
                 }
             },
             methods: {
-                addValue(d) {
-                    this.counter += d;
+                up: function(number, questionCardPk) {
+                    console.log(questionCardPk);
+                    [this.questionCardList[number], this.questionCardList[number - 1]] = [this.questionCardList[number - 1], this.questionCardList[number]];
                 },
-                submitdjnago(d) {
-                    self = this
-                    axios.get('vuetest')
-                    .then(function (res) {
-                        self.counter++;
-                    });
-                    //this.counter += d;
-                },
-                change() {
-                    [this.items[0], this.items[1]] = [this.items[1], this.items[0]];
-                }
-            },
-            /*
-                配列
-            */
-            /*mounted() {
-                setInterval(() => {
-                    this.counter++
-                }, 1000)
-            },*/
-            delimiters: ['[[', ']]']
-        }
-     
-        const app = Vue.createApp(
-            Counter
-        )
-        app.component("my-template", {
-            props:["name"],
-            template: `
-                <div class="row">
-                    <div class="col">
-                        <p>[[name]]</p>
-                    </div>
-                </div>
-            `,
-            delimiters: ['[[', ']]']
-        });
-        app.mount("#counter")
-
-        const ComponentA = {
-            props:["name"],
-            template: `
-                <div class="row question_card">
-                    <div class="col">
-                        <p>[[name]]</p>
-                    </div>
-                </div>`,
-            delimiters: ['[[', ']]']
-        }
-
-        const app2 = Vue.createApp({
-            data() {
-                return {
-                    myName : ['Foo', 'Bar']
-                }
-            },
-            methods: {
-                swap() {
-                    console.log(this.$refs.first_child.$el.textContent);
-                    [this.myName[0], this.myName[1]] = [this.myName[1], this.myName[0]];
+                down: function(number, questionCardPk) {
+                    console.log(questionCardPk);
+                    [this.questionCardList[number], this.questionCardList[number + 1]] = [this.questionCardList[number + 1], this.questionCardList[number]];
                 }
             },
             delimiters: ['[[', ']]']
-        }).component("my-template", ComponentA).mount("#app")
+        }).component("question-card-component", QuestionCardComponent).mount("#app")
     </script>
 {% endblock %}
