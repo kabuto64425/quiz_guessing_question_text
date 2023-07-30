@@ -5,6 +5,14 @@ from django.views.generic.edit import CreateView, UpdateView
 from django_filters.views import FilterView
 from django.core.exceptions import PermissionDenied
 from django.db.models import Max
+from django.db import transaction
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 from utils.mixins import CustomLoginRequiredMixin
 from users.models import User
@@ -153,3 +161,37 @@ class QuestionCardUpdateView(CustomLoginRequiredMixin, UpdateView):
         question_card.updated_at = timezone.now()
         question_card.save()
         return super().form_valid(form)
+
+class QuestionCardSwapOrderApiView(APIView):
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+    
+    @transaction.atomic
+    def post(self, request, format=None):
+        questionCardPk1 = request.data["questionCardPk1"]
+        questionCardPk2 = request.data["questionCardPk2"]
+        
+        questionCard1 = QuestionCard.objects.get(pk=questionCardPk1)
+        questionCard2 = QuestionCard.objects.get(pk=questionCardPk2)
+
+        temp = questionCard2.order
+        questionCard2.order = -2000000000
+        questionCard2.save()
+
+        questionCard1.order, temp = temp, questionCard1.order
+        questionCard1.save()
+        
+        questionCard2.order = temp
+        questionCard2.save()
+        
+        return Response({"message": "OK"})
+    
+class QuestionCardApiView(APIView):
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, format=None):
+        return Response({"message": "Hello, world!"})
+    
+    def post(self, request, format=None):
+        return Response({"message": "Hello, world! post"})

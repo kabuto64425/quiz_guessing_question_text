@@ -129,38 +129,51 @@
                 </li>`
                 ,
             methods:{
-                isFirst() {
-                    return this.number == 0;
-                },
                 up: function(){
-                    this.$emit("up", this.number, this.questionCardPk);
+                    this.$emit("up", this.number);
                 },
                 down: function(){
-                    this.$emit("down", this.number, this.questionCardPk);
+                    this.$emit("down", this.number);
                 }
             },
             delimiters: ['[[', ']]']
-        }
+        };
 
         const app = Vue.createApp({
             data() {
                 return {
-                    counter: 0,
-                    items : [{ message: 'Foo' }, { message: 'Bar' }],
                     questionCardList : questionCardListFromServer,
                 }
             },
             methods: {
-                up: function(number, questionCardPk) {
-                    console.log(questionCardPk);
-                    [this.questionCardList[number], this.questionCardList[number - 1]] = [this.questionCardList[number - 1], this.questionCardList[number]];
+                up: function(number) {
+                    console.log(number);
+                    console.log(this.questionCardList[number]);
+                    axios.defaults.xsrfCookieName = 'csrftoken'
+                    axios.defaults.xsrfHeaderName = "X-Csrftoken"
+                    axios.post("{% url 'question_card_swap' %}", {
+                        questionCardPk1: this.questionCardList[number].questionCardPk,
+                        questionCardPk2: this.questionCardList[number - 1].questionCardPk
+                    })
+                    .then((res) => {
+                        [this.questionCardList[number], this.questionCardList[number - 1]] = [this.questionCardList[number - 1], this.questionCardList[number]];
+                    });
                 },
-                down: function(number, questionCardPk) {
-                    console.log(questionCardPk);
-                    [this.questionCardList[number], this.questionCardList[number + 1]] = [this.questionCardList[number + 1], this.questionCardList[number]];
+                down: function(number) {
+                    console.log(number);
+                    console.log(this.questionCardList[number]);
+                    axios.defaults.xsrfCookieName = 'csrftoken'
+                    axios.defaults.xsrfHeaderName = "X-Csrftoken"
+                    axios.post("{% url 'question_card_swap' %}", {
+                        questionCardPk1: this.questionCardList[number].questionCardPk,
+                        questionCardPk2: this.questionCardList[number + 1].questionCardPk
+                    })
+                    .then((res) => {
+                        [this.questionCardList[number], this.questionCardList[number + 1]] = [this.questionCardList[number + 1], this.questionCardList[number]];
+                    });
                 }
             },
             delimiters: ['[[', ']]']
-        }).component("question-card-component", QuestionCardComponent).mount("#app")
+        }).component("question-card-component", QuestionCardComponent).mount("#app");
     </script>
 {% endblock %}

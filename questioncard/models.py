@@ -73,3 +73,6 @@ class QuestionCard(models.Model):
         """
         verbose_name = '問題カード'
         verbose_name_plural = '問題カード'
+        constraints = [
+            models.UniqueConstraint(fields=['in_deck', 'order'], name='unique__in_deck__order')
+        ]

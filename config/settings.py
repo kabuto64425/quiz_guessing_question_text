@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+
+    'rest_framework',
     
     'crispy_forms',
     'users.apps.UsersConfig',
@@ -222,3 +224,10 @@ ACCOUNT_ADAPTER = 'users.adapters.CustomAccountAdapter'
 SOCIALACCOUNT_ADAPTER = 'users.adapters.CustomSocialAccountAdapter'
 # Googleアカウント初回ログイン時に自動でサインアップする
 SOCIALACCOUNT_AUTO_SIGNUP = True
+
+# REST通信の認証のデフォルト設定
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ]
+}
