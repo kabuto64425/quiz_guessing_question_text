@@ -9,7 +9,8 @@ from django.db import transaction
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.exceptions import ValidationError
+from rest_framework.exceptions import PermissionDenied as RestPermissionDenied
 
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -36,9 +37,6 @@ class QuestionCardListView(CustomLoginRequiredMixin, FilterView):
     filterset_class = QuestionCardFilterSet
     # django-filter ver2.0対応 クエリ未設定時に全件表示する設定
     strict = False
-
-    # 1ページの表示
-    paginate_by = 10
 
     def get(self, request, **kwargs):
         # 自身のデッキに対してほかユーザーがアクセスするのを防ぐため
@@ -174,6 +172,17 @@ class QuestionCardSwapOrderApiView(APIView):
         questionCard1 = QuestionCard.objects.get(pk=questionCardPk1)
         questionCard2 = QuestionCard.objects.get(pk=questionCardPk2)
 
+        deck1 = Deck.objects.get(pk=questionCard1.in_deck.pk)
+        deck2 = Deck.objects.get(pk=questionCard2.in_deck.pk)
+
+        # 入れ替えようとしているデッキが同一か確認
+        if deck1 != deck2:
+            raise ValidationError("順序を入れ替えようとしているそれぞれの所有デッキが異なります")
+        
+        # 入れ替えようとしているデッキは本人のものか確認
+        if self.request.user != deck1.owner:
+            raise RestPermissionDenied
+
         temp = questionCard2.order
         questionCard2.order = -2000000000
         questionCard2.save()
@@ -185,13 +194,3 @@ class QuestionCardSwapOrderApiView(APIView):
         questionCard2.save()
         
         return Response({"message": "OK"})
-    
-class QuestionCardApiView(APIView):
-    authentication_classes = [SessionAuthentication]
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request, format=None):
-        return Response({"message": "Hello, world!"})
-    
-    def post(self, request, format=None):
-        return Response({"message": "Hello, world! post"})

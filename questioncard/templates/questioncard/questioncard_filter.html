@@ -32,14 +32,9 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-3">
-            <div class="col-10 mx-auto">
-                {% include "_pagination.html" %}
-            </div>
-        </div>
         <div class="row">
             <div class="col-12">
-                <ul class="list-group">
+                <ul v-if="questionCardList.length" class="list-group">
                     <question-card-component v-for="(questionCard, index) in questionCardList"
                     :question-card-pk="questionCard.questionCardPk"
                     :question-text="questionCard.questionText"
@@ -51,11 +46,11 @@
                     @up="up"
                     @down="down"></my-template>
                 </ul>
-            </div>
-        </div>
-        <div class="row mt-3">
-            <div class="col-10 mx-auto">
-                {% include "_pagination.html" %}
+                <ul v-else>
+                    <li class="list-group-item">
+                        対象のデータがありません
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
