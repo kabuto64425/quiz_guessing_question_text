@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView ,DeleteView
 from django_filters.views import FilterView
 from django.core.exceptions import PermissionDenied
 
@@ -94,8 +94,8 @@ class DeckUpdateView(CustomLoginRequiredMixin, UpdateView):
 
     # 自身のデッキに対してほかユーザーがアクセスするのを防ぐため
     def get(self, request, *args, **kwargs):
-        post = super().get_object()
-        if self.request.user == post.owner:
+        deck = super().get_object()
+        if self.request.user == deck.owner:
             return super().get(request, *args, **kwargs)
         else:
             raise PermissionDenied
@@ -109,3 +109,18 @@ class DeckUpdateView(CustomLoginRequiredMixin, UpdateView):
         deck.save()
 
         return HttpResponseRedirect(self.success_url)
+
+class DeckDeleteView(CustomLoginRequiredMixin, DeleteView):
+    """
+    ビュー：削除画面
+    """
+    model = Deck
+    success_url = reverse_lazy('deck_list')
+
+    # 自身のデッキに対してほかユーザーがアクセスするのを防ぐため
+    def get(self, request, *args, **kwargs):
+        deck = super().get_object()
+        if self.request.user == deck.owner:
+            return super().get(request, *args, **kwargs)
+        else:
+            raise PermissionDenied
