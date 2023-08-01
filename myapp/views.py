@@ -8,5 +8,5 @@ from .mixins import CustomLoginRequiredMixin #追加
 class IndexView(CustomLoginRequiredMixin, TemplateView):
     template_name = "myapp/index.html"
 
-class VueTestView(CustomLoginRequiredMixin, TemplateView):
+class VueTestView(TemplateView):
     template_name = "myapp/vuetest.html"

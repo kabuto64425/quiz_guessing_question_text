@@ -26,11 +26,12 @@
                 },
                 submitdjnago(d) {
                     self = this
-                    axios.get('vuetest')
+                    axios.defaults.xsrfCookieName = 'csrftoken'
+                    axios.defaults.xsrfHeaderName = "X-Csrftoken"
+                    axios.post("{% url 'question_card_api_view' %}")
                     .then(function (res) {
-                        self.counter++;
+                        console.log(res);
                     });
-                    //this.counter += d;
                 },
                 change() {
                     [this.items[0], this.items[1]] = [this.items[1], this.items[0]];
