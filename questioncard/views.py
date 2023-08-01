@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 from django.utils import timezone
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django_filters.views import FilterView
 from django.core.exceptions import PermissionDenied
 from django.db.models import Max
@@ -159,6 +159,34 @@ class QuestionCardUpdateView(CustomLoginRequiredMixin, UpdateView):
         question_card.updated_at = timezone.now()
         question_card.save()
         return super().form_valid(form)
+    
+class QuestionCardDeleteView(CustomLoginRequiredMixin, DeleteView):
+    """
+    ビュー：削除画面
+    """
+    model = QuestionCard
+
+    # 自身のデッキに対してほかユーザーがアクセスするのを防ぐため
+    def get(self, request, *args, **kwargs):
+        deck = super().get_object().in_deck
+        if self.request.user == deck.owner:
+            return super().get(request, *args, **kwargs)
+        else:
+            raise PermissionDenied
+    
+    def get_context_data(self, *, object_list=None, **kwargs):
+        """
+        表示データの設定
+        """
+        # 表示データを追加したい場合は、ここでキーを追加しテンプレート上で表示する
+        # 例：kwargs['sample'] = 'sample'
+        deck = self.object.in_deck
+        kwargs['deck_pk'] = deck.pk
+        return super().get_context_data(object_list=object_list, **kwargs)
+
+    def get_success_url(self):
+        deck = self.object.in_deck
+        return reverse('question_card_list', kwargs={'deck_pk': deck.pk})
 
 class QuestionCardSwapOrderApiView(APIView):
     authentication_classes = [SessionAuthentication]
