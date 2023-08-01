@@ -40,6 +40,7 @@
                     :question-text="questionCard.questionText"
                     :correct-answer="questionCard.correctAnswer"
                     :question-card-update-url="questionCard.questionCardUpdateUrl"
+                    :question-card-delete-url="questionCard.questionCardDeleteUrl"
                     :number="index"
                     :is-first="index == 0"
                     :is-last="index == questionCardList.length - 1"
@@ -62,12 +63,13 @@
                     questionText: "{{ questioncard.question_text|default_if_none:'未入力' }}",
                     correctAnswer: "{{ questioncard.correct_answer|default_if_none:'未入力' }}",
                     questionCardUpdateUrl: "{% url 'question_card_update' questioncard.pk %}",
+                    questionCardDeleteUrl: "{% url 'question_card_delete' questioncard.pk %}",
                 },
             {% endfor %}
         ];
 
         const QuestionCardComponent = {
-            props:["questionCardPk", "questionText", "correctAnswer", "questionCardUpdateUrl", "number", "isFirst", "isLast"],
+            props:["questionCardPk", "questionText", "correctAnswer", "questionCardUpdateUrl", "questionCardDeleteUrl", "number", "isFirst", "isLast"],
             template: `
                 <li class="list-group-item question_card">
                     {# 必要な項目を追加してください #}
@@ -93,6 +95,7 @@
                                 <div class="col-12">
                                     <div class="float-right">
                                         <a class="btn btn-outline-dark " v-bind:href="questionCardUpdateUrl">編集</a>
+                                        <a class="btn btn-outline-dark " v-bind:href="questionCardDeleteUrl">削除</a>
                                     </div>
                                 </div>
                             </div>
@@ -110,17 +113,6 @@
                             </div>
                         </div>
                     </div>
-                    
-                    {% if False %}
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="float-right">
-                                <a class="btn btn-outline-dark " href="{% url 'deck_update' deck.pk %}">編集</a>
-                                <a class="btn btn-outline-dark " href="{% url 'delete' deck.pk %}">削除</a>
-                            </div>
-                        </div>
-                    </div>
-                    {% endif %}
                 </li>`
                 ,
             methods:{
