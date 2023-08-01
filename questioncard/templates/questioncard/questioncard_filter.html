@@ -134,8 +134,6 @@
             },
             methods: {
                 up: function(number) {
-                    console.log(number);
-                    console.log(this.questionCardList[number]);
                     axios.defaults.xsrfCookieName = 'csrftoken'
                     axios.defaults.xsrfHeaderName = "X-Csrftoken"
                     axios.post("{% url 'question_card_swap' %}", {
@@ -147,8 +145,6 @@
                     });
                 },
                 down: function(number) {
-                    console.log(number);
-                    console.log(this.questionCardList[number]);
                     axios.defaults.xsrfCookieName = 'csrftoken'
                     axios.defaults.xsrfHeaderName = "X-Csrftoken"
                     axios.post("{% url 'question_card_swap' %}", {
