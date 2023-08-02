@@ -8,7 +8,7 @@ from questioncard.models import QuestionCard
 from deck.models import Deck
 
 # このviewのルーティングは「/myapp/Index」
-class IndexView(CustomLoginRequiredMixin, DetailView):
+class IndexView(CustomLoginRequiredMixin, TemplateView):
 
     #model = QuestionCard
 
@@ -29,4 +29,6 @@ class IndexView(CustomLoginRequiredMixin, DetailView):
         """
         # 表示データの追加はここで 例：
         # kwargs['sample'] = 'sample'
+        deck = Deck.objects.get(pk=self.kwargs.get('deck_pk'))
+        kwargs["questioncard"] = QuestionCard.objects.filter(in_deck=deck).order_by('order')[self.kwargs.get('number') - 1]
         return super().get_context_data(**kwargs)
