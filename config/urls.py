@@ -24,6 +24,7 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('deck/', include('deck.urls')),
     path('question_card/', include('questioncard.urls')),
+    path('set_question/', include('setquestion.urls')),
     path('', include('allauth.urls')),
 ]
 

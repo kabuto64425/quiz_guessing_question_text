@@ -5,23 +5,6 @@ from .models import QuestionCard
 # Register your models here.
 @admin.register(QuestionCard)
 class QuestionCardAdmin(admin.ModelAdmin):
-    #fieldsets = (
-    #    (None, {"fields": ("username", "password", "nick_name", "uuid_for_google_form")}),
-    #    (_("Personal info"), {"fields": ("first_name", "last_name", "email")}),
-    #    (
-    #        _("Permissions"),
-    #        {
-    #            "fields": (
-    #                "is_active",
-    #                "is_staff",
-    #                "is_superuser",
-    #                "groups",
-    #                "user_permissions",
-    #            ),
-    #        },
-    #    ),
-    #    (_("Important dates"), {"fields": ("last_login", "date_joined")}),
-    #)
     fieldsets = ((None, {"fields": ("question_text", "correct_answer", "order")}),)
     readonly_fields = ('in_deck',)
     

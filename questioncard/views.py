@@ -205,7 +205,7 @@ class QuestionCardSwapOrderApiView(APIView):
 
         # 入れ替えようとしているデッキが同一か確認
         if deck1 != deck2:
-            raise ValidationError("順序を入れ替えようとしているそれぞれの所有デッキが異なります")
+            raise ValidationError("順序を入れ替えようとしているカードの所有デッキがそれぞれ異なります")
         
         # 入れ替えようとしているデッキは本人のものか確認
         if self.request.user != deck1.owner:
