@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class SetquestionConfig(AppConfig):
+class AskquestionConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'setquestion'
+    name = 'askquestion'

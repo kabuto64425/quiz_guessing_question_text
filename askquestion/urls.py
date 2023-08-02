@@ -5,5 +5,5 @@ from .views import IndexView
 # アプリケーションのルーティング設定
 
 urlpatterns = [
-    path('', IndexView.as_view(), name='set_question')
+    path('<int:pk>/<int:number>', IndexView.as_view(), name='set_question')
 ]

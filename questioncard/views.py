@@ -211,6 +211,7 @@ class QuestionCardSwapOrderApiView(APIView):
         if self.request.user != deck1.owner:
             raise RestPermissionDenied
 
+        # orderの一意制約エラーを回避するため
         temp = questionCard2.order
         questionCard2.order = -2000000000
         questionCard2.save()

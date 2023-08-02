@@ -1,0 +1,25 @@
+{% extends "_base.html" %}
+{% block content %}
+    {% load crispy_forms_tags %}
+    <div id="app" class="container">
+        <div class="row">
+            <div v-for="(questionTextPart, index) in splitedQuestionText" class="col-1">
+                [[questionTextPart]]
+            </div>
+        </div>
+    </div>
+    <script>
+        const questionText = "{{ questioncard.question_text }}";
+        const splitedQuestionTextFromServer = questionText.split("");
+        console.log(splitedQuestionTextFromServer);
+
+        const app = Vue.createApp({
+            data() {
+                return {
+                    splitedQuestionText : splitedQuestionTextFromServer,
+                }
+            },
+            delimiters: ['[[', ']]']
+        }).mount("#app");
+    </script>
+{% endblock %}

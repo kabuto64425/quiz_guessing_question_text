@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     'myapp.apps.MyappConfig',
     'deck.apps.DeckConfig',
     'questioncard.apps.QuestioncardConfig',
-    'setquestion.apps.SetquestionConfig',
+    'askquestion.apps.AskquestionConfig',
 
     'utils'
 ]
