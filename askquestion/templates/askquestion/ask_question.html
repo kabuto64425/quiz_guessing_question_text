@@ -3,20 +3,32 @@
     {% load crispy_forms_tags %}
     <div id="app" class="container">
         <div class="row">
-            <div v-for="(questionTextPart, index) in splitedQuestionText" class="col-1">
-                [[questionTextPart]]
+            <div v-for="(panel, index) in panels" class="col-1" @click="open(index)">
+                <div class="embed-responsive embed-responsive-1by1 border d-flex align-items-center justify-content-center display-4" style="cursor: pointer;">
+                    <span v-if="panel.isOpen">[[panel.chara]]</span>
+                    <span v-else>[[index + 1]]</span>
+                </div>
             </div>
         </div>
     </div>
     <script>
         const questionText = "{{ questioncard.question_text }}";
         const splitedQuestionTextFromServer = questionText.split("");
-        console.log(splitedQuestionTextFromServer);
 
         const app = Vue.createApp({
             data() {
                 return {
-                    splitedQuestionText : splitedQuestionTextFromServer,
+                    panels : splitedQuestionTextFromServer.map((c)=>{
+                        return {
+                            chara: c,
+                            isOpen: false
+                        }
+                    }),
+                }
+            },
+            methods: {
+                open: function(index) {
+                    this.panels[index].isOpen = true;
                 }
             },
             delimiters: ['[[', ']]']
