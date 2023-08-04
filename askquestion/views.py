@@ -15,13 +15,8 @@ class IndexView(CustomLoginRequiredMixin, TemplateView):
     template_name = "askquestion/ask_question.html"
 
     def get(self, request, *args, **kwargs):
-        deck = QuestionCard.objects.get(pk=1)
-        return super().get(request, *args, **kwargs)
-    
-    def get_queryset(self):
         deck = Deck.objects.get(pk=self.kwargs.get('deck_pk'))
-        foo = QuestionCard.objects.filter(in_deck=deck)[0]
-        return foo
+        return super().get(request, *args, **kwargs)
     
     def get_context_data(self, **kwargs):
         """
