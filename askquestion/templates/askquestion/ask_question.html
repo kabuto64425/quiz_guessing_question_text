@@ -1,7 +1,15 @@
 {% extends "_base.html" %}
 {% block content %}
+    {% load static %}
     {% load crispy_forms_tags %}
     <div id="app" class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="float-right mt-1">
+                    <a class="btn btn-outline-dark" href="{% url 'deck_list' %}">戻る</a>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div v-for="(panel, index) in panels" class="col-1" @click="open(index)">
                 <div class="embed-responsive embed-responsive-1by1 border d-flex align-items-center justify-content-center display-4" style="cursor: pointer;">
@@ -10,6 +18,21 @@
                 </div>
             </div>
         </div>
+        <div class="row justify-content-around">
+            <div class="col-1"><img src="{% static "icons/caret-left-square.svg" %}"></img></div>
+            <div class="col-1"><img src="{% static "icons/caret-right-square.svg" %}"></img></div>
+        </div>
+        {% for url in urls %}
+        {% if forloop.counter0|divisibleby:10 %}
+        <div class="row justify-content-center">
+            <div class="col-8 d-flex">
+        {% endif %}
+                <div class="p-1" style="width: 10%;"><a class="btn btn-outline-dark btn-block" href="{{url}}">{{forloop.counter}}</a></div>
+        {% if forloop.counter|divisibleby:10 %}
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
     </div>
     <script>
         const questionText = "{{ questioncard.question_text }}";

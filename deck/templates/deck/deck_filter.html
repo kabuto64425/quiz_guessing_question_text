@@ -53,6 +53,11 @@
                             </div>
                             <div class="row">
                                 <div class="col-12">
+                                    {% if deck.in_deck.all|length > 0 %}
+                                    <div class="float-left">
+                                        <a class="btn btn-outline-dark " href="{% url 'ask_question' deck.pk 1 %}">出題</a>
+                                    </div>
+                                    {% endif %}
                                     <div class="float-right">
                                         <a class="btn btn-outline-dark " href="{% url 'question_card_list' deck.pk %}">問題</a>
                                         <a class="btn btn-outline-dark " href="{% url 'deck_update' deck.pk %}">編集</a>

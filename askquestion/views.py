@@ -1,6 +1,7 @@
 from django.shortcuts import render
 #from django.contrib.auth.mixins import LoginRequiredMixin カスタムクラスを使用するため不要
 from django.views.generic import DetailView,TemplateView
+from django.urls import reverse
 
 from utils.mixins import CustomLoginRequiredMixin #追加
 
@@ -25,5 +26,10 @@ class IndexView(CustomLoginRequiredMixin, TemplateView):
         # 表示データの追加はここで 例：
         # kwargs['sample'] = 'sample'
         deck = Deck.objects.get(pk=self.kwargs.get('deck_pk'))
-        kwargs["questioncard"] = QuestionCard.objects.filter(in_deck=deck).order_by('order')[self.kwargs.get('number') - 1]
+        question_cards = QuestionCard.objects.filter(in_deck=deck).order_by('order')
+        kwargs["questioncard"] = question_cards[self.kwargs.get('number') - 1]
+
+        urls = [reverse('ask_question', kwargs={'deck_pk': self.kwargs.get('deck_pk'), 'number': i + 1}) for i in range(len(question_cards))]
+        kwargs["urls"] = urls
+
         return super().get_context_data(**kwargs)
