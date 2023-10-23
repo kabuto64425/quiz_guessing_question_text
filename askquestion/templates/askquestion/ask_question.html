@@ -10,7 +10,8 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div style="height:1400px">
+        <div class="row mt-3">
             <div v-for="(panel, index) in panels" class="col-1" @click="open(index)">
                 <div class="embed-responsive embed-responsive-1by1 border d-flex align-items-center justify-content-center display-4" :class="[panel.isOpen? 'alert alert-light' : 'alert alert-dark']" style="cursor: pointer;">
                     <span class="text-dark" v-if="panel.isOpen">[[panel.chara]]</span>
@@ -18,13 +19,19 @@
                 </div>
             </div>
         </div>
+        </div>
+        <div class="row">
+            <div class="col text-center">
+                <span style="background-color: black; color: black;">{{ questioncard.correct_answer }}</span>
+            </div>
+        </div>
         <div class="row justify-content-around">
-            <div class="col-1"><img src="{% static "icons/caret-left-square.svg" %}"></img></div>
-            <div class="col-1"><img src="{% static "icons/caret-right-square.svg" %}"></img></div>
+            <div class="col-1"><a {% if prev_url != None %} href="{{ prev_url }}" {% else %} href="#" style="visibility: hidden;" {% endif %}><img style="height: 48px" src="{% static "icons/caret-left-square.svg" %}"></img></a></div>
+            <div class="col-1"><a {% if next_url != None %} href="{{ next_url }}" {% else %} href="#" style="visibility: hidden;" {% endif %}><img style="height: 48px" src="{% static "icons/caret-right-square.svg" %}"></img></a></div>
         </div>
         {% for url in urls %}
         {% if forloop.counter0|divisibleby:10 %}
-        <div class="row justify-content-center">
+        <div class="row mt-3 justify-content-center">
             <div class="col-8 d-flex">
         {% endif %}
                 <div class="p-1" style="width: 10%;"><a class="btn btn-outline-dark btn-block" href="{{url}}">{{forloop.counter}}</a></div>
