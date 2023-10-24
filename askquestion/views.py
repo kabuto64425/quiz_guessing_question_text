@@ -35,6 +35,8 @@ class IndexView(CustomLoginRequiredMixin, TemplateView):
         
         kwargs["questioncard"] = question_cards[self.kwargs.get('number') - 1]
 
+        kwargs["question_number"] = self.kwargs.get('number')
+
         kwargs["next_url"] = reverse('ask_question', kwargs={'deck_pk': self.kwargs.get('deck_pk'), 'number': self.kwargs.get('number') + 1}) if self.kwargs.get('number') < len(question_cards) else None
         kwargs["prev_url"] = reverse('ask_question', kwargs={'deck_pk': self.kwargs.get('deck_pk'), 'number': self.kwargs.get('number') - 1}) if self.kwargs.get('number') > 1 else None
 

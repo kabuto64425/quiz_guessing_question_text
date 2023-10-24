@@ -11,14 +11,24 @@
             </div>
         </div>
         <div style="height:1400px">
-        <div class="row mt-3">
-            <div v-for="(panel, index) in panels" class="col-1" @click="open(index)">
-                <div class="embed-responsive embed-responsive-1by1 border d-flex align-items-center justify-content-center display-4" :class="[panel.isOpen? 'alert alert-light' : 'alert alert-dark']" style="cursor: pointer;">
-                    <span class="text-dark" v-if="panel.isOpen">[[panel.chara]]</span>
-                    <span v-else>[[index + 1]]</span>
+            <div class="row">
+                <div class="col text-center display-4">
+                    <span>[[countClosePanels()]]/[[panels.length]]</span>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div v-for="(panel, index) in panels" class="col-1" @click="open(index)">
+                    <div class="embed-responsive embed-responsive-1by1 border d-flex align-items-center justify-content-center display-4" :class="[panel.isOpen? 'alert alert-light' : 'alert alert-dark']" style="cursor: pointer;">
+                        <span class="text-dark" v-if="panel.isOpen">[[panel.chara]]</span>
+                        <span v-else>[[index + 1]]</span>
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col text-center">
+                <span>↓ドラッグで正解表示(解答者に見られないように注意！！)</span>
+            </div>
         </div>
         <div class="row">
             <div class="col text-center">
@@ -34,7 +44,7 @@
         <div class="row mt-3 justify-content-center">
             <div class="col-8 d-flex">
         {% endif %}
-                <div class="p-1" style="width: 10%;"><a class="btn btn-outline-dark btn-block" href="{{url}}">{{forloop.counter}}</a></div>
+                <div class="p-1" style="width: 10%;"><a class="btn {% if question_number == forloop.counter %} btn-secondary {% else %} btn-outline-dark {% endif %} btn-block" href="{{url}}">{{forloop.counter}}</a></div>
         {% if forloop.counter|divisibleby:10 %}
             </div>
         </div>
@@ -59,6 +69,9 @@
             methods: {
                 open: function(index) {
                     this.panels[index].isOpen = true;
+                },
+                countClosePanels() {
+                    return this.panels.filter(panel=>!panel.isOpen).length;
                 }
             },
             delimiters: ['[[', ']]']
