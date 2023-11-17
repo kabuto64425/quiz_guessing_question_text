@@ -47,7 +47,7 @@
             <div class="col-8 d-flex">
         {% endif %}
                 <div class="p-1" style="width: 10%;"><a class="btn {% if question_number == forloop.counter %} btn-secondary {% else %} btn-outline-dark {% endif %} btn-block" href="{{url}}">{{forloop.counter}}</a></div>
-        {% if forloop.counter|divisibleby:10 %}
+        {% if forloop.counter|divisibleby:10 or forloop.last %}
             </div>
         </div>
         {% endif %}
