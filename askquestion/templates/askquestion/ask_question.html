@@ -19,7 +19,7 @@
                 <div class="col d-flex align-items-center"><img style="height: 48px; cursor: pointer;" src="{% static "icons/lightbulb.svg" %}" @click="openAll()"></img></div>
             </div>
             <div class="row mt-3">
-                <div v-for="(panel, index) in panels" class="col-1" @click="open(index)">
+                <div v-for="(panel, index) in panels" class="col-3 col-sm-2 col-md-1" @click="open(index)">
                     <div class="embed-responsive embed-responsive-1by1 border d-flex align-items-center justify-content-center display-4" :class="[panel.isOpen? 'alert alert-light' : 'alert alert-dark']" style="cursor: pointer;">
                         <span class="text-dark" v-if="panel.isOpen">[[panel.chara]]</span>
                         <span v-else>[[index + 1]]</span>
@@ -44,7 +44,7 @@
         {% for url in urls %}
         {% if forloop.counter0|divisibleby:10 %}
         <div class="row mt-3 justify-content-center">
-            <div class="col-8 d-flex">
+            <div class="col-12 col-md-8 d-flex">
         {% endif %}
                 <div class="p-1" style="width: 10%;"><a class="btn {% if question_number == forloop.counter %} btn-secondary {% else %} btn-outline-dark {% endif %} btn-block" href="{{url}}">{{forloop.counter}}</a></div>
         {% if forloop.counter|divisibleby:10 or forloop.last %}
