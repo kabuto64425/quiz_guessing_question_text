@@ -1,10 +1,6 @@
 from django.views.generic import FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import UserUpdateForm
-from django.contrib.auth.views import LoginView as BaseLoginView
-
-class LoginView(BaseLoginView):
-    template_name = "users/login.html"
 
 class UserChangeView(LoginRequiredMixin, FormView):
     template_name = 'users/update.html'

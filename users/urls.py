@@ -1,10 +1,9 @@
 from django.urls import path
 
-from .views import UserChangeView, LoginView
+from .views import UserChangeView
 
 # アプリケーションのルーティング設定
 app_name = 'users'
 urlpatterns = [
-    path('login', LoginView.as_view(), name='login'),
-    path('update', UserChangeView.as_view(), name='update'),
+    path('update', UserChangeView.as_view(), name='update')
 ]
