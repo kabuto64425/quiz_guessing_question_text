@@ -1,0 +1,7 @@
+.ask_question_jump_question_button {
+    width: 20%;
+}
+
+@media (min-width: 992px) { .ask_question_jump_question_button {
+    width: 10%;
+}}
