@@ -2,7 +2,7 @@
 {% block content %}
     {% load static %}
     {% load crispy_forms_tags %}
-    <div id="app" class="container">
+    <div id="app" class="container-xl">
         <div class="row">
             <div class="col-12">
                 <div class="float-right mt-1">
@@ -10,7 +10,7 @@
                 </div>
             </div>
         </div>
-        <div style="height:1400px">
+        <div id="question_text_field" style="min-height: 1400px;">
             <div class="row">
                 <div class="col"></div>
                 <div class="col text-center display-4">
@@ -19,8 +19,8 @@
                 <div class="col d-flex align-items-center"><img style="height: 48px; cursor: pointer;" src="{% static "icons/lightbulb.svg" %}" @click="openAll()"></img></div>
             </div>
             <div class="row mt-3">
-                <div v-for="(panel, index) in panels" class="col-3 col-sm-2 col-lg-1" @click="open(index)">
-                    <div class="embed-responsive embed-responsive-1by1 border d-flex align-items-center justify-content-center display-4" :class="[panel.isOpen? 'alert alert-light' : 'alert alert-dark']" style="cursor: pointer;">
+                <div v-for="(panel, index) in panels" class="col-2 col-lg-1 p-1" @click="open(index)">
+                    <div class="embed-responsive embed-responsive-1by1 border d-flex align-items-center justify-content-center m-0 display-custom" :class="[panel.isOpen? 'alert alert-light' : 'alert alert-dark']" style="cursor: pointer;">
                         <span class="text-dark" v-if="panel.isOpen">[[panel.chara]]</span>
                         <span v-else>[[index + 1]]</span>
                     </div>
@@ -35,7 +35,7 @@
                           <button class="btn btn-link stretched-link" type="button"
                               data-toggle="collapse" data-target="#card-4a"
                               aria-expanded="true" aria-controls="card-4a">
-                              正解表示(解答者に見られないように注意！！)
+                              正解表示
                           </button>
                         </div>
                         <div id="card-4a" class="collapse"
@@ -61,6 +61,11 @@
         </div>
     </div>
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            text_field_height = document.getElementById("question_text_field").offsetHeight;
+            document.getElementById("question_text_field").style.height = (text_field_height + 850) + "px"
+        });
+
         const questionText = "{{ questioncard.question_text }}";
         const splitedQuestionTextFromServer = questionText.split("");
 

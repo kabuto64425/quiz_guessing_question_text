@@ -2,6 +2,23 @@
     width: 20%;
 }
 
+.display-custom {
+    font-size: 2.2rem;
+    font-weight: 300;
+    line-height: 1.2;
+}
+
 @media (min-width: 992px) { .ask_question_jump_question_button {
     width: 10%;
+}
+.display-custom {
+    font-size: 3.5rem;
+    font-weight: 300;
+    line-height: 1.2;
+}}
+
+@media (min-width: 540px) { .display-custom {
+    font-size: 3.5rem;
+    font-weight: 300;
+    line-height: 1.2;
 }}
