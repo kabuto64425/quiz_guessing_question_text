@@ -19,6 +19,14 @@ class Deck(models.Model):
         null=False,
     )
 
+    # デッキ名
+    public_flag = models.BooleanField(
+        verbose_name='全体公開',
+        default=False,
+        blank=False,
+        null=False,
+    )
+
     # 以下、管理項目
 
     # 所有者(ユーザー)

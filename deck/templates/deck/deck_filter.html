@@ -2,30 +2,8 @@
 {% block content %}
     {% load crispy_forms_tags %}
     <div class="container">
-        <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">検索条件</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="閉じる">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form id="filter" method="get">
-                        <div class="modal-body">
-                            {{ filter.form|crispy }}
-                        </div>
-                    </form>
-                    <div class="modal-footer">
-                        <a class="btn btn-outline-dark" data-dismiss="modal">戻る</a>
-                        <button type="submit" class="btn btn-outline-dark" form="filter">検索</button>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="row">
             <div class="col-12">
-                <a class="btn btn-secondary filtered" style="visibility:hidden" href="/?page=1">検索を解除</a>
                 <div class="float-right mt-1">
                     <a class="btn btn-outline-dark" href="{% url 'index' %}">戻る</a>
                     <a class="btn btn-outline-dark" href="{% url 'deck_create' %}">新規</a>
@@ -58,7 +36,13 @@
                                         <a class="btn btn-outline-dark " href="{% url 'ask_question' deck.pk 1 %}">出題</a>
                                     </div>
                                     {% endif %}
-                                    <div class="float-right">
+                                    <div class="float-right d-flex justify-content-center">
+                                        {% if deck.public_flag %}
+                                        <div class="d-inline" style="margin-top: 10px;">
+                                        <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="問題文推理クイズのデッキを公開しました。" data-url="{{ request.scheme }}://{{ request.get_host }}{% url 'ask_question' deck.pk 1 %}" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                                        </div>
+                                        <div class="fb-share-button m-auto" data-href="{{ request.scheme }}://{{ request.get_host }}{% url 'ask_question' deck.pk 1 %}" data-layout="button"></div>
+                                        {% endif %}
                                         <a class="btn btn-outline-dark " href="{% url 'question_card_list' deck.pk %}">問題</a>
                                         <a class="btn btn-outline-dark " href="{% url 'deck_update' deck.pk %}">編集</a>
                                         <a class="btn btn-outline-dark " href="{% url 'deck_delete' deck.pk %}">削除</a>
