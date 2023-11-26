@@ -1,5 +1,6 @@
 {% extends "_base.html" %}
 {% block content %}
+    {% load static %}
     {% load crispy_forms_tags %}
     <div class="container">
         <div class="row">
@@ -30,23 +31,33 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-12">
+                                <div class="col-3">
                                     {% if deck.in_deck.all|length > 0 %}
-                                    <div class="float-left">
-                                        <a class="btn btn-outline-dark " href="{% url 'ask_question' deck.pk 1 %}">出題</a>
+                                    <a class="btn btn-outline-dark " href="{% url 'ask_question' deck.pk 1 %}">出題</a>
+                                    {% endif %}
+                                </div>
+                                <div class="col-3">
+                                </div>
+                                <div class="col-3">
+                                    {% if deck.in_deck.all|length > 0 %}
+                                    <div class="d-flex">
+                                        <div class="d-inline" style="margin-top: 10px;">
+                                            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="問題文推理クイズのデッキを公開しました。" data-url="{{ request.scheme }}://{{ request.get_host }}{% url 'ask_question' deck.pk 1 %}" data-show-count="false" data-size="small">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                                        </div>
+                                        <div class="fb-share-button" style="margin-top: 6px;" data-href="{{ request.scheme }}://{{ request.get_host }}{% url 'ask_question' deck.pk 1 %}" data-layout="button"></div>
+                                        <img class="copy_url" style="height: 25px; margin-top: 6px; cursor: pointer;" src="{% static "icons/clipboard-check.svg" %}"></img>
+                                        <div class="d-inline"><span class="message hidden">copied!</span></div>
                                     </div>
                                     {% endif %}
-                                    <div class="float-right d-flex justify-content-center">
-                                        {% if deck.public_flag %}
-                                        <div class="d-inline" style="margin-top: 10px;">
-                                        <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="問題文推理クイズのデッキを公開しました。" data-url="{{ request.scheme }}://{{ request.get_host }}{% url 'ask_question' deck.pk 1 %}" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-                                        </div>
-                                        <div class="fb-share-button m-auto" data-href="{{ request.scheme }}://{{ request.get_host }}{% url 'ask_question' deck.pk 1 %}" data-layout="button"></div>
-                                        {% endif %}
-                                        <a class="btn btn-outline-dark " href="{% url 'question_card_list' deck.pk %}">問題</a>
-                                        <a class="btn btn-outline-dark " href="{% url 'deck_update' deck.pk %}">編集</a>
-                                        <a class="btn btn-outline-dark " href="{% url 'deck_delete' deck.pk %}">削除</a>
-                                    </div>
+                                </div>
+                                <div class="col-1">
+                                    <a class="btn btn-outline-dark " href="{% url 'question_card_list' deck.pk %}">問題</a>
+                                </div>
+                                <div class="col-1">
+                                    <a class="btn btn-outline-dark " href="{% url 'deck_update' deck.pk %}">編集</a>
+                                </div>
+                                <div class="col-1">
+                                    <a class="btn btn-outline-dark " href="{% url 'deck_delete' deck.pk %}">削除</a>
                                 </div>
                             </div>
                         </li>
@@ -64,4 +75,28 @@
             </div>
         </div>
     </div>
+    <script>
+        console.log(document.getElementsByClassName("copy_url"));
+        Array.from(document.getElementsByClassName("copy_url")).forEach(function(elm){
+            elm.addEventListener("click", function(eve){
+                navigator.clipboard.writeText(elm.dataset.url);
+                item = elm.closest(".list-group-item");
+                message = item.getElementsByClassName("message")[0];
+                message.classList.remove('hidden');
+                message.classList.add('popup-message');
+            });
+        });
+        function copyUrl() {
+            var url = location.href;
+            navigator.clipboard.writeText(url);
+            message.classList.remove('hidden');
+            message.classList.add('popup-message');
+        }
+        Array.from(document.getElementsByClassName("message")).forEach(function(elm){
+            elm.addEventListener('animationend', () => {
+                elm.classList.remove('popup-message');
+                elm.classList.add('hidden');
+            });
+        });
+    </script>
 {% endblock %}

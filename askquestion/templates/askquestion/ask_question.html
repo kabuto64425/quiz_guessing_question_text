@@ -25,7 +25,7 @@
             </div>
             <div class="row mt-3">
                 <div v-for="(panel, index) in panels" class="col-2 col-lg-1 p-1" @click="open(index)">
-                    <div class="embed-responsive embed-responsive-1by1 border d-flex align-items-center justify-content-center m-0 display-custom" :class="[panel.isOpen? 'alert alert-light' : 'alert alert-dark']" style="cursor: pointer;">
+                    <div class="embed-responsive embed-responsive-1by1 border d-flex align-items-center justify-content-center m-0 display-custom" :class="[panel.isOpen? 'alert alert-light' : 'alert alert-dark']" style="cursor: pointer; user-select: none;">
                         <span class="text-dark" v-if="panel.isOpen">[[panel.chara]]</span>
                         <span v-else>[[index + 1]]</span>
                     </div>
@@ -87,7 +87,7 @@
             },
             methods: {
                 open: function(index) {
-                    this.panels[index].isOpen = true;
+                    this.panels[index].isOpen = !this.panels[index].isOpen;
                 },
                 openAll: function() {
                     this.panels.forEach((element) => element.isOpen = true);
