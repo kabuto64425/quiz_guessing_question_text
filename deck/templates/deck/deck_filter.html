@@ -45,7 +45,7 @@
                                             <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="問題文推理クイズのデッキを公開しました。" data-url="{{ request.scheme }}://{{ request.get_host }}{% url 'ask_question' deck.pk 1 %}" data-show-count="false" data-size="small">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
                                         </div>
                                         <div class="fb-share-button" style="margin-top: 6px;" data-href="{{ request.scheme }}://{{ request.get_host }}{% url 'ask_question' deck.pk 1 %}" data-layout="button"></div>
-                                        <img class="copy_url" style="height: 25px; margin-top: 6px; cursor: pointer;" src="{% static "icons/clipboard-check.svg" %}"></img>
+                                        <img class="copy_url" style="height: 25px; margin-top: 6px; cursor: pointer;" src="{% static "icons/clipboard-check.svg" %}" data-url="{{ request.scheme }}://{{ request.get_host }}{% url 'ask_question' deck.pk 1 %}"></img>
                                         <div class="d-inline"><span class="message hidden">copied!</span></div>
                                     </div>
                                     {% endif %}
