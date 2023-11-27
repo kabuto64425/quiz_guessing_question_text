@@ -24,7 +24,7 @@
 }}
 
 .hidden {
-    display: none;
+    visibility: hidden;
 }
 
 .message {
@@ -33,7 +33,7 @@
     background: #ddd;
     font-weight: bold;
     text-align: center;
-    position: absolute;
+    /*position: absolute;*/
 }
 
 .popup-message {

@@ -23,24 +23,17 @@
                         <li class="list-group-item">
                             {# 必要な項目を追加してください #}
                             <div class="row">
-                                <div class="col-5 col-sm-3">
+                                <div class="col-4 col-sm-3">
                                     <p>デッキ名</p>
                                 </div>
-                                <div class="col-7 col-sm-9">
+                                <div class="col-8 col-sm-9">
                                     <p>{{ deck.deck_name|default_if_none:"未入力" }}</p>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-3">
+                                <div class="col">
                                     {% if deck.in_deck.all|length > 0 %}
-                                    <a class="btn btn-outline-dark " href="{% url 'ask_question' deck.pk 1 %}">出題</a>
-                                    {% endif %}
-                                </div>
-                                <div class="col-3">
-                                </div>
-                                <div class="col-3">
-                                    {% if deck.in_deck.all|length > 0 %}
-                                    <div class="d-flex">
+                                    <div class="d-flex justify-content-end">
                                         <div class="d-inline" style="margin-top: 10px;">
                                             <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="問題文推理クイズのデッキを公開しました。" data-url="{{ request.scheme }}://{{ request.get_host }}{% url 'ask_question' deck.pk 1 %}" data-show-count="false" data-size="small">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
                                         </div>
@@ -50,14 +43,19 @@
                                     </div>
                                     {% endif %}
                                 </div>
-                                <div class="col-1">
-                                    <a class="btn btn-outline-dark " href="{% url 'question_card_list' deck.pk %}">問題</a>
-                                </div>
-                                <div class="col-1">
-                                    <a class="btn btn-outline-dark " href="{% url 'deck_update' deck.pk %}">編集</a>
-                                </div>
-                                <div class="col-1">
-                                    <a class="btn btn-outline-dark " href="{% url 'deck_delete' deck.pk %}">削除</a>
+                            </div>
+                            <div class="row">
+                                <div class="col-4 col-sm-3">
+                                    {% if deck.in_deck.all|length > 0 %}
+                                    <a class="btn btn-outline-dark " href="{% url 'ask_question' deck.pk 1 %}">出題</a>
+                                    {% endif %}
+                                </div>                                
+                                <div class="col-8 col-sm-9">
+                                    <div class="d-flex justify-content-end">
+                                        <a class="btn btn-outline-dark " href="{% url 'question_card_list' deck.pk %}">問題</a>
+                                        <a class="btn btn-outline-dark " href="{% url 'deck_update' deck.pk %}">編集</a>
+                                        <a class="btn btn-outline-dark " href="{% url 'deck_delete' deck.pk %}">削除</a>
+                                    </div>
                                 </div>
                             </div>
                         </li>
