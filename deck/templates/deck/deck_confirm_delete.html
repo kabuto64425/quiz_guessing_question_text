@@ -9,9 +9,13 @@
             {% csrf_token %}
             <div class="row">
                 <div class="col-12">
-                    <div class="float-right">
-                        <a class="btn btn-outline-dark" href="{% url 'deck_list' %}">戻る</a>
-                        <input type="submit" class="btn btn-outline-dark delete" value="削除"/>
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <a class="btn btn-outline-dark" href="{% url 'deck_list' %}">戻る</a>
+                        </div>
+                        <div>
+                            <input type="submit" class="btn btn-outline-dark delete" value="削除"/>
+                        </div>
                     </div>
                 </div>
             </div>

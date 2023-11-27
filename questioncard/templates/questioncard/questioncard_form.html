@@ -10,9 +10,13 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <div class="float-right">
-                    <a class="btn btn-outline-dark" href="{% url 'question_card_list' deck_pk %}">戻る</a>
-                    <a class="btn btn-outline-dark save" href="#">保存</a>
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <a class="btn btn-outline-dark" href="{% url 'question_card_list' deck_pk %}">戻る</a>
+                    </div>
+                    <div>
+                        <a class="btn btn-outline-dark save" href="#">保存</a>
+                    </div>
                 </div>
             </div>
         </div>

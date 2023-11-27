@@ -2,33 +2,15 @@
 {% block content %}
     {% load crispy_forms_tags %}
     <div id="app" class="container">
-        <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">検索条件</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="閉じる">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form id="filter" method="get">
-                        <div class="modal-body">
-                            {{ filter.form|crispy }}
-                        </div>
-                    </form>
-                    <div class="modal-footer">
-                        <a class="btn btn-outline-dark" data-dismiss="modal">戻る</a>
-                        <button type="submit" class="btn btn-outline-dark" form="filter">検索</button>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="row">
             <div class="col-12">
-                <a class="btn btn-secondary filtered" style="visibility:hidden" href="/?page=1">検索を解除</a>
-                <div class="float-right mt-1">
-                    <a class="btn btn-outline-dark" href="{% url 'deck_list' %}">戻る</a>
-                    <a class="btn btn-outline-dark" href="{% url 'question_card_create' request.resolver_match.kwargs.deck_pk %}">新規</a>
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <a class="btn btn-outline-dark" href="{% url 'deck_list' %}">戻る</a>
+                    </div>
+                    <div>
+                        <a class="btn btn-outline-dark" href="{% url 'question_card_create' request.resolver_match.kwargs.deck_pk %}">新規</a>
+                    </div>
                 </div>
             </div>
         </div>

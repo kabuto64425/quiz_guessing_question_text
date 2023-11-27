@@ -5,9 +5,13 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <div class="float-right mt-1">
-                    <a class="btn btn-outline-dark" href="{% url 'index' %}">戻る</a>
-                    <a class="btn btn-outline-dark" href="{% url 'deck_create' %}">新規</a>
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <a class="btn btn-outline-dark" href="{% url 'index' %}">戻る</a>
+                    </div>
+                    <div>
+                        <a class="btn btn-outline-dark" href="{% url 'deck_create' %}">新規</a>
+                    </div>
                 </div>
             </div>
         </div>
