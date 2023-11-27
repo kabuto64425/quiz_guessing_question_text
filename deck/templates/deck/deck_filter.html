@@ -31,8 +31,13 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <div class="col">
-                                    {% if deck.in_deck.all|length > 0 %}
+                                <div class="col-4 col-sm-3">
+                                    <div class="h-100 d-flex align-items-center">
+                                        <span style="display: inline-block; vertical-align: middle;">{{deck.in_deck.all|length}}問</span>
+                                    </div>
+                                </div>
+                                <div class="col-8 col-sm-9">
+                                    {% if deck.in_deck.all|length > 0 and deck.public_flag %}
                                     <div class="d-flex justify-content-end">
                                         <div class="d-inline" style="margin-top: 10px;">
                                             <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="問題文推理クイズのデッキを公開しました。" data-url="{{ request.scheme }}://{{ request.get_host }}{% url 'ask_question' deck.pk 1 %}" data-show-count="false" data-size="small">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>

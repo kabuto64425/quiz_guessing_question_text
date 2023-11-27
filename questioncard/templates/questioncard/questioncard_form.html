@@ -24,4 +24,21 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const div_id_question_text = document.getElementById("div_id_question_text");
+            const question_text_count = document.createElement("div");
+            question_text_count.id = "id_question_text_count"
+            question_text_count.style.textAlign = "right";
+
+            const question_text = document.getElementById("id_question_text");
+
+            question_text_count.textContent = question_text.value.length + "文字";
+            div_id_question_text.appendChild(question_text_count);
+
+            question_text.addEventListener('input', function(){
+                question_text_count.textContent = question_text.value.length + "文字";
+            });
+        });
+    </script>
 {% endblock %}
