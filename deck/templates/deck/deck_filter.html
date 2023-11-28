@@ -44,7 +44,7 @@
                                     {% if deck.in_deck.all|length > 0 and deck.public_flag %}
                                     <div class="d-flex justify-content-end">
                                         <div class="d-inline" style="margin-top: 10px;">
-                                            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="問題文推理クイズのデッキを公開しました。" data-url="{{ request.scheme }}://{{ request.get_host }}{% url 'ask_question' deck.pk 1 %}" data-show-count="false" data-size="small">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                                            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="問題文推理クイズのデッキ「{{ deck.deck_name|default_if_none:'未入力' }}」を公開しました。" data-url="{{ request.scheme }}://{{ request.get_host }}{% url 'ask_question' deck.pk 1 %}" data-show-count="false" data-size="small">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
                                         </div>
                                         <div class="fb-share-button" style="margin-top: 6px;" data-href="{{ request.scheme }}://{{ request.get_host }}{% url 'ask_question' deck.pk 1 %}" data-layout="button"></div>
                                         <div class="d-inline">
