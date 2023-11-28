@@ -74,8 +74,8 @@
                     <div id="card-controller" class="collapse">
                     <div class="card-body">
                         <div class="row justify-content-around">
-                            <div class="col-1"><a {% if prev_url != None %} href="{{ prev_url }}" {% else %} href="#" style="visibility: hidden;" {% endif %}><img style="height: 48px" src="{% static "icons/caret-left-square.svg" %}"></img></a></div>
-                            <div class="col-1"><a {% if next_url != None %} href="{{ next_url }}" {% else %} href="#" style="visibility: hidden;" {% endif %}><img style="height: 48px" src="{% static "icons/caret-right-square.svg" %}"></img></a></div>
+                            <div class="col-1"><a class="ask_question_move_question_button" {% if prev_url != None %} href="{{ prev_url }}" {% else %} href="#" style="visibility: hidden;" {% endif %}><img style="height: 48px" src="{% static "icons/caret-left-square.svg" %}"></img></a></div>
+                            <div class="col-1"><a class="ask_question_move_question_button" {% if next_url != None %} href="{{ next_url }}" {% else %} href="#" style="visibility: hidden;" {% endif %}><img style="height: 48px" src="{% static "icons/caret-right-square.svg" %}"></img></a></div>
                         </div>
                         <div class="row mt-3 justify-content-center">
                             <div class="col-12 d-flex flex-wrap">
