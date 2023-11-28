@@ -3,6 +3,9 @@
 {% block meta_viewport %}
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
 {% endblock %}
+{% block body_tag %}
+<body style="touch-action: manipulation;">
+{% endblock %}
 {% block content %}
     {% load static %}
     {% load crispy_forms_tags %}
