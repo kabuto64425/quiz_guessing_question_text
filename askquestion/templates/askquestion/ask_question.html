@@ -26,7 +26,7 @@
                 </div>
             </div>
         </div>
-        <div id="question_text_field" style="min-height: 1400px;">
+        <div id="question_text_field" class="mb-5" style="min-height: 400px;">
             <div class="row">
                 <div class="col"></div>
                 <div class="col text-center display-4">
@@ -47,15 +47,14 @@
             <div class="col col-md-8">
                 <div class="accordion" id="accordion-4">
                     <div class="card">
-                        <div class="card-header" id="header-4a">
+                        <div class="card-header position-relative">
                           <button class="btn btn-link stretched-link" type="button"
-                              data-toggle="collapse" data-target="#card-4a"
-                              aria-expanded="true" aria-controls="card-4a">
+                              data-toggle="collapse" data-target="#card-answer"
+                              aria-expanded="false" aria-controls="card-answer">
                               正解表示
                           </button>
                         </div>
-                        <div id="card-4a" class="collapse"
-                            aria-labelledby="header-4a" data-parent="#accordion-4">
+                        <div id="card-answer" class="collapse">
                           <div class="card-body">
                             {{ questioncard.correct_answer }}
                           </div>
@@ -64,24 +63,36 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-3 justify-content-around">
-            <div class="col-1"><a {% if prev_url != None %} href="{{ prev_url }}" {% else %} href="#" style="visibility: hidden;" {% endif %}><img style="height: 48px" src="{% static "icons/caret-left-square.svg" %}"></img></a></div>
-            <div class="col-1"><a {% if next_url != None %} href="{{ next_url }}" {% else %} href="#" style="visibility: hidden;" {% endif %}><img style="height: 48px" src="{% static "icons/caret-right-square.svg" %}"></img></a></div>
-        </div>
-        <div class="row mt-3 justify-content-center">
-            <div class="col-12 col-md-8 d-flex flex-wrap">
-                {% for url in urls %}
-                    <div class="p-1 mb-3 ask_question_jump_question_button"><a class="btn {% if question_number == forloop.counter %} btn-secondary {% else %} btn-outline-dark {% endif %} btn-block" href="{{url}}">{{forloop.counter}}</a></div>
-                {% endfor %}
+        <div class="row mt-3 mb-3 justify-content-around">
+            <div class="col-12 col-md-8">
+                <div class="card">
+                    <div class="card-header position-relative">
+                        <button class="btn btn-link stretched-link" type="button"
+                            data-toggle="collapse" data-target="#card-controller"
+                            aria-expanded="false" aria-controls="card-controller">
+                            コントローラー表示
+                        </button>
+                    </div>
+                    <div id="card-controller" class="collapse">
+                    <div class="card-body">
+                        <div class="row justify-content-around">
+                            <div class="col-1"><a {% if prev_url != None %} href="{{ prev_url }}" {% else %} href="#" style="visibility: hidden;" {% endif %}><img style="height: 48px" src="{% static "icons/caret-left-square.svg" %}"></img></a></div>
+                            <div class="col-1"><a {% if next_url != None %} href="{{ next_url }}" {% else %} href="#" style="visibility: hidden;" {% endif %}><img style="height: 48px" src="{% static "icons/caret-right-square.svg" %}"></img></a></div>
+                        </div>
+                        <div class="row mt-3 justify-content-center">
+                            <div class="col-12 d-flex flex-wrap">
+                                {% for url in urls %}
+                                    <div class="p-1 mb-3 ask_question_jump_question_button"><a class="btn {% if question_number == forloop.counter %} btn-secondary {% else %} btn-outline-dark {% endif %} btn-block" href="{{url}}">{{forloop.counter}}</a></div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            text_field_height = document.getElementById("question_text_field").offsetHeight;
-            document.getElementById("question_text_field").style.height = (text_field_height + 850) + "px"
-        });
-
         const questionText = "{{ questioncard.question_text }}";
         const splitedQuestionTextFromServer = questionText.split("");
 
