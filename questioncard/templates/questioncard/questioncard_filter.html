@@ -55,50 +55,57 @@
             template: `
                 <li class="list-group-item question_card">
                     {# 必要な項目を追加してください #}
-                    <div class="row ">
-                        <div class="col-1">
+                    {# 画面幅が小さいと12列でも改行が発生する(原因不明)ため、flex-nowrapを付けて暫定処理 #}
+                    <div class="row flex-nowrap">
+                        <div class="col-1 col-sm-1">
                             <div class="row">
                                 <div class="col">
                                     [[number + 1]]
                                 </div>
                             </div>
                         </div>
-                        <div class="col-10">
+                        <div class="col-9 col-sm-10">
                             <div class="row">
-                                <div class="col-4 col-sm-3">
+                                {# 画面幅が小さい場合でも項目名が改行を起こさないようにstyleにnowrapを付ける #}
+                                <div class="col-3 col-sm-3" style="white-space: nowrap">
                                     <p>問題文</p>
                                 </div>
-                                <div class="col-8 col-sm-9">
+                                <div class="col-9 col-sm-9">
                                     <p>[[questionText]]</p>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-4 col-sm-3">
+                                {# 画面幅が小さい場合でも項目名が改行を起こさないようにstyleにnowrapを付ける #}
+                                <div class="col-3 col-sm-3" style="white-space: nowrap">
                                     <p>正解</p>
                                 </div>
-                                <div class="col-8 col-sm-9">
+                                <div class="col-9 col-sm-9">
                                     <p>[[correctAnswer]]</p>
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-2 col-sm-1">
                             <div class="row">
-                                <div class="col-12">
+                                <div class="col">
                                     <div class="float-right">
-                                        <a class="btn btn-outline-dark " v-bind:href="questionCardUpdateUrl">編集</a>
-                                        <a class="btn btn-outline-dark " v-bind:href="questionCardDeleteUrl">削除</a>
+                                        <a class="btn btn-outline-dark" :class="{'disabled' : isFirst}" href="#" @click.prevent.stop="up">↑</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="float-right">
+                                        <a class="btn btn-outline-dark" :class="{'disabled' : isLast}" href="#" @click.prevent.stop="down">↓</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-1">
-                            <div class="row">
-                                <div class="col float-right">
-                                    <a class="btn btn-outline-dark" :class="{'disabled' : isFirst}" href="#" @click.prevent.stop="up">↑</a>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col float-right">
-                                    <a class="btn btn-outline-dark" :class="{'disabled' : isLast}" href="#" @click.prevent.stop="down">↓</a>
-                                </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="float-right">
+                                <a class="btn btn-outline-dark " v-bind:href="questionCardUpdateUrl">編集</a>
+                                <a class="btn btn-outline-dark " v-bind:href="questionCardDeleteUrl">削除</a>
                             </div>
                         </div>
                     </div>
