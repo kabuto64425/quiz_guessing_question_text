@@ -32,7 +32,7 @@
                 <div class="col text-center display-4">
                     <span>[[countClosePanels()]]/[[panels.length]]</span>
                 </div>
-                <div class="col d-flex align-items-center"><img style="height: 48px; cursor: pointer;" src="{% static "icons/lightbulb.svg" %}" @click="openAll()"></img></div>
+                <div class="col d-flex align-items-center"><img style="height: 48px; cursor: pointer;" src="{% static "icons/lightbulb.svg" %}" @click="eventClickLight()"></img></div>
             </div>
             <div class="row mt-3">
                 <div v-for="(panel, index) in panels" class="col-2 col-lg-1 p-1" @click="open(index)">
@@ -109,8 +109,18 @@
                 open: function(index) {
                     this.panels[index].isOpen = !this.panels[index].isOpen;
                 },
+                eventClickLight: function(){
+                    if(this.panels.every((element) => element.isOpen)) {
+                        this.closeAll();
+                    } else {
+                        this.openAll();
+                    }
+                },
                 openAll: function() {
                     this.panels.forEach((element) => element.isOpen = true);
+                },
+                closeAll:function() {
+                    this.panels.forEach((element) => element.isOpen = false);
                 },
                 countClosePanels() {
                     return this.panels.filter(panel=>!panel.isOpen).length;
