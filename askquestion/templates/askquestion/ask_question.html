@@ -8,7 +8,6 @@
 {% endblock %}
 {% block content %}
     {% load static %}
-    {% load crispy_forms_tags %}
     <div id="app" class="container-xl">
         <div class="row">
             <div class="col-12">
@@ -43,52 +42,7 @@
                 </div>
             </div>
         </div>
-        <div class="row justify-content-around">
-            <div class="col col-md-8">
-                <div class="card">
-                    <div class="card-header position-relative">
-                      <button class="btn btn-link stretched-link" type="button"
-                          data-toggle="collapse" data-target="#card-answer"
-                          aria-expanded="false" aria-controls="card-answer">
-                          正解表示
-                      </button>
-                    </div>
-                    <div id="card-answer" class="collapse">
-                      <div class="card-body">
-                        {{ questioncard.correct_answer }}
-                      </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row mt-3 mb-3 justify-content-around">
-            <div class="col-12 col-md-8">
-                <div class="card">
-                    <div class="card-header position-relative">
-                        <button class="btn btn-link stretched-link" type="button"
-                            data-toggle="collapse" data-target="#card-controller"
-                            aria-expanded="false" aria-controls="card-controller">
-                            コントローラー表示
-                        </button>
-                    </div>
-                    <div id="card-controller" class="collapse">
-                    <div class="card-body">
-                        <div class="row justify-content-around">
-                            <div class="col-1"><a class="prev_question_button" {% if prev_url != None %} href="{{ prev_url }}" {% else %} href="#" style="visibility: hidden;" {% endif %}><img style="height: 48px" src="{% static "icons/caret-left-square.svg" %}"></img></a></div>
-                            <div class="col-1"><a class="next_question_button" {% if next_url != None %} href="{{ next_url }}" {% else %} href="#" style="visibility: hidden;" {% endif %}><img style="height: 48px" src="{% static "icons/caret-right-square.svg" %}"></img></a></div>
-                        </div>
-                        <div class="row mt-3 justify-content-center">
-                            <div class="col-12 d-flex flex-wrap">
-                                {% for url in urls %}
-                                    <div class="p-1 mb-3 ask_question_jump_question_button"><a class="btn {% if question_number == forloop.counter %} btn-secondary {% else %} btn-outline-dark {% endif %} btn-block" href="{{url}}">{{forloop.counter}}</a></div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        {% include "./operations.html" %}
     </div>
     <script>
         const questionText = "{{ questioncard.question_text }}";

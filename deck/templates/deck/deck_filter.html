@@ -44,11 +44,11 @@
                                     {% if deck.in_deck.all|length > 0 and deck.public_flag %}
                                     <div class="d-flex justify-content-end">
                                         <div class="d-inline" style="margin-top: 10px;">
-                                            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="問題文推理クイズのデッキ「{{ deck.deck_name|default_if_none:'未入力' }}」を公開しました。" data-url="{{ request.scheme }}://{{ request.get_host }}{% url 'ask_question' deck.pk 1 %}" data-show-count="false" data-size="small">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                                            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="問題文推理クイズのデッキ「{{ deck.deck_name|default_if_none:'未入力' }}」を公開しました。" data-url="{{ request.scheme }}://{{ request.get_host }}{% url 'ask_question_top' deck.pk %}" data-show-count="false" data-size="small">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
                                         </div>
-                                        <div class="fb-share-button" style="margin-top: 6px;" data-href="{{ request.scheme }}://{{ request.get_host }}{% url 'ask_question' deck.pk 1 %}" data-layout="button"></div>
+                                        <div class="fb-share-button" style="margin-top: 6px;" data-href="{{ request.scheme }}://{{ request.get_host }}{% url 'ask_question_top' deck.pk %}" data-layout="button"></div>
                                         <div class="d-inline">
-                                            <img class="copy_url" style="height: 25px; margin-top: 6px; cursor: pointer;" src="{% static "icons/clipboard-check.svg" %}" data-url="{{ request.scheme }}://{{ request.get_host }}{% url 'ask_question' deck.pk 1 %}"></img>
+                                            <img class="copy_url" style="height: 25px; margin-top: 6px; cursor: pointer;" src="{% static "icons/clipboard-check.svg" %}" data-url="{{ request.scheme }}://{{ request.get_host }}{% url 'ask_question_top' deck.pk %}"></img>
                                             <span class="message hidden" style="bottom: 30px; right:0px;">copied!</span>
                                         </div>
                                     </div>
@@ -58,7 +58,7 @@
                             <div class="row">
                                 <div class="col-4 col-sm-3">
                                     {% if deck.in_deck.all|length > 0 %}
-                                    <a class="btn btn-outline-dark " href="{% url 'ask_question' deck.pk 1 %}">出題</a>
+                                    <a class="btn btn-outline-dark " href="{% url 'ask_question_top' deck.pk %}">出題</a>
                                     {% endif %}
                                 </div>                                
                                 <div class="col-8 col-sm-9">
