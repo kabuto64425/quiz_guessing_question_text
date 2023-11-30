@@ -1,7 +1,7 @@
 {% load static %}
 <div class="row mb-3 justify-content-around">
-    <div class="col-1"><a class="prev_question_button" {% if prev_url is not None %} href="{{ prev_url }}" {% else %} href="#" style="visibility: hidden;" {% endif %}><img style="height: 48px" src="{% static "icons/caret-left-square.svg" %}"></img></a></div>
-    <div class="col-1 text-right"><a class="next_question_button" {% if next_url is not None %} href="{{ next_url }}" {% else %} href="#" style="visibility: hidden;" {% endif %}><img style="height: 48px" src="{% static "icons/caret-right-square.svg" %}"></img></a></div>
+    <div class="col-3 col-md-1"><a class="prev_question_button" {% if prev_url is not None %} href="{{ prev_url }}" {% else %} href="#" style="visibility: hidden;" {% endif %}><img style="height: 48px" src="{% static "icons/caret-left-square.svg" %}"></img></a></div>
+    <div class="col-3 col-md-1 text-right"><a class="next_question_button" {% if next_url is not None %} href="{{ next_url }}" {% else %} href="#" style="visibility: hidden;" {% endif %}><img style="height: 48px" src="{% static "icons/caret-right-square.svg" %}"></img></a></div>
 </div>
 <div class="row mb-3 justify-content-around" {% if question_number is None %} style="visibility: hidden;" {% endif %}>
     <div class="col col-md-8">
