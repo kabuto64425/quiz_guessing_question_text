@@ -35,8 +35,8 @@
             <div class="card-body">
                 <div class="row mt-3 justify-content-center">
                     <div class="col-12 d-flex flex-wrap">
-                        {% for url in urls %}
-                            <div class="p-1 mb-3 ask_question_jump_question_button"><a class="btn {% if question_number == forloop.counter %} btn-secondary {% else %} btn-outline-dark {% endif %} btn-block" href="{{url}}">{{forloop.counter}}</a></div>
+                        {% for jump_button_info in jump_button_infos %}
+                            <div class="p-1 mb-3 ask_question_jump_question_button" style="white-space: nowrap"><a class="btn {% if jump_button_info.is_secondary %} btn-secondary {% else %} btn-outline-dark {% endif %} btn-block" href="{{jump_button_info.url}}">{{jump_button_info.text}}</a></div>
                         {% endfor %}
                     </div>
                 </div>
