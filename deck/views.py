@@ -54,7 +54,7 @@ class DeckListView(CustomLoginRequiredMixin, FilterView):
         """
         # デフォルトの並び順として、登録時間（降順）をセットする。
         user = self.request.user  # ログインユーザーモデルの取得
-        return Deck.objects.all().filter(owner = user).order_by('-created_at')
+        return Deck.objects.select_related("owner").prefetch_related("in_deck").all().filter(owner = user).order_by('-created_at')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         """
